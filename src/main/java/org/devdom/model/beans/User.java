@@ -20,13 +20,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "dev_dom_user")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Users.findAll", query = "SELECT u FROM UserBeans u"),
-    @NamedQuery(name = "Users.findByUserId", query = "SELECT u FROM UserBeans u WHERE u.userId = :userId"),
-    @NamedQuery(name = "Users.findByFirstName", query = "SELECT u FROM UserBeans u WHERE u.firstName = :firstName"),
-    @NamedQuery(name = "Users.findByLastName", query = "SELECT u FROM UserBeans u WHERE u.lastName = :lastName"),
-    @NamedQuery(name = "Users.findBySex", query = "SELECT u FROM UserBeans u WHERE u.sex = :sex"),
-    @NamedQuery(name = "Users.count", query = "SELECT count(u) FROM UserBeans u")})
-public class UserBeans implements Serializable {
+    @NamedQuery(name = "Users.findAll", query = "SELECT u FROM User u"),
+    @NamedQuery(name = "Users.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
+    @NamedQuery(name = "Users.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName"),
+    @NamedQuery(name = "Users.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
+    @NamedQuery(name = "Users.findBySex", query = "SELECT u FROM User u WHERE u.sex = :sex"),
+    @NamedQuery(name = "Users.count", query = "SELECT count(u) FROM User u")})
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,11 +53,43 @@ public class UserBeans implements Serializable {
     private String picCover;
     @Column(name = "offset_y")
     private String offsetY;
+    @Column(name = "uid")
+    private Long uid;
+    
+    public User(){
+    }
+    
+    /**
+     *
+     * @param firstName
+     * @param lastName
+     * @param picSmall
+     * @param picBig
+     * @param pic
+     * @param sex
+     * @param username
+     * @param picCover
+     * @param offsetY
+     * @param uid
+     */
 
-    public UserBeans() {
+    public User(String firstName, String lastName, String picSmall, String picBig, String pic,
+            String sex, String username, String picCover, String offsetY, Long uid) {
+        
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setPicSmall(picSmall);
+        this.setPicBig(picBig);
+        this.setPic(pic);
+        this.setSex(sex);
+        this.setUsername(username);
+        this.setPicCover(picCover);
+        this.setOffsetY(offsetY);
+        this.setUid(uid);
+
     }
 
-    public UserBeans(Integer userId) {
+    public User(Integer userId) {
         this.userId = userId;
     }
 
@@ -148,6 +180,14 @@ public class UserBeans implements Serializable {
     public void setOffsetY(String offsetY) {
         this.offsetY = offsetY;
     }
+    
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
 
     @Override
     public int hashCode() {
@@ -159,10 +199,10 @@ public class UserBeans implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserBeans)) {
+        if (!(object instanceof User)) {
             return false;
         }
-        UserBeans other = (UserBeans) object;
+        User other = (User) object;
         if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
             return false;
         }

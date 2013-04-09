@@ -1,16 +1,20 @@
 package org.devdom.controller;
 
 import java.util.List;
+import javax.persistence.NoResultException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.devdom.model.beans.UserBeans;
+import org.devdom.model.beans.User;
 import org.devdom.model.dao.UserDao;
+
 
 /**
  * Clase User.
@@ -30,10 +34,10 @@ import org.devdom.model.dao.UserDao;
  * 
  * @author      Carlos Vásquez Polanco
  * @version     %I%, %G%
- * @since       0.1
+ * @since       0.4
  */
 @Path("/user")
-public class User {
+public class UserResource {
     
     UserDao user = new UserDao();
     private final int PAGE_SIZE = 50;
@@ -44,15 +48,14 @@ public class User {
     * <p>
     * Este método no tiene criterio de filtración pero fijo solo muestra la primera página.
     *
-    * @return   returna una lista de tipo UserBeans que será formateado dependiendo del tipo de documento
-    * @see      UserBeans
+    * @return   returna una lista de tipo User que será formateado dependiendo del tipo de documento
+    * @see      User
     */
     @GET
-    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public Response index(){
-        //return user.findAll(1,PAGE_SIZE);
-        return Response.status(Response.Status.OK).entity(user.findAll(1,PAGE_SIZE).toArray()).build();
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public List<User> index(){
+        return user.findAll(1,PAGE_SIZE);
     }
 
     /**
@@ -63,16 +66,16 @@ public class User {
     * permite mostrar 50 developers por página.
     *
     * @param    pageNumber especifica página a ser vista
-    * @return   returna una lista de tipo UserBeans que será formateado dependiendo del tipo de documento
-    * @see      UserBeans
+    * @return   returna una lista de tipo User que será formateado dependiendo del tipo de documento
+    * @see      User
     */
     @GET 
     @Path("/findAll/{pageNumber}")
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public List<UserBeans> findAll(@PathParam("pageNumber") @DefaultValue("1") int pageNumber){
-        return user.findAll(pageNumber,PAGE_SIZE);
-    }
+    public List<User> findAll(@PathParam("pageNumber") @DefaultValue("1") int pageNumber) {
+        return user.findAll(pageNumber,PAGE_SIZE);        
+    }    
     
     /**
     * findByUserID. 
@@ -88,32 +91,62 @@ public class User {
     @Path("/findByUserID/{userID}")
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public Response findByUserID(@PathParam("userID") int userID){
-        return Response.status(Response.Status.OK).entity(user.findByUserId(userID)).build();
+    public Response findByUserID (@PathParam("userID") int userID)
+    {
+        try{
+            return Response.status(Response.Status.OK).entity(user.findByUserId(userID)).build();
+        }catch(NoResultException ex){            
+            return Response.status(Response.Status.NOT_FOUND)
+                       .entity(ex.getMessage()).type(MediaType.TEXT_PLAIN)
+                       .build();
+        }
     }
     
     @GET
     @Path("/findByFirstName/{firstName}")
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public Response findByFirstName(@PathParam("firstName") String firstName){
-        return Response.status(Response.Status.OK).entity(user.findByFirstName(firstName)).build();
+    public List<User> findByFirstName(@PathParam("firstName") String firstName){
+        return user.findByFirstName(firstName);
     }
     
     @GET
-    @Path("/findByFirstName/{lastName}")
+    @Path("/findByLastName/{lastName}")
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public Response findByLastName(@PathParam("lastName") String lastName){
-        return Response.status(Response.Status.OK).entity(user.findByFirstName(lastName)).build();
+    public List<User> findByLastName(@PathParam("lastName") String lastName){
+        return user.findByLastName(lastName);
     }
     
     @GET
-    @Path("/findByFirstName/{lastName}")
+    @Path("/count")
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public Response count(@PathParam("lastName") String lastName){
-        return Response.status(Response.Status.OK).entity(user.count()).build();
+    public String count(){
+        return String.valueOf(user.count());
     }
-    
+            
+    @POST
+    @Path("/add")
+    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+    public String add(
+            @QueryParam("firstName") String firstName,
+            @QueryParam("lastName") String lastName,
+            @QueryParam("picSmall") String picSmall,
+            @QueryParam("picBig") String picBig,
+            @QueryParam("pic") String pic,
+            @QueryParam("sex") String sex,
+            @QueryParam("username") String username,
+            @QueryParam("picCover") String picCover,
+            @QueryParam("offsetY") String offsetY,
+            @QueryParam("uid") Long uid
+            ){
+
+        UserDao addUser = new UserDao(firstName,lastName,picSmall,picBig,pic,sex,username,picCover,offsetY,uid);
+
+        return String.valueOf(addUser.getPersistUser());
+
+    }
+
 }
