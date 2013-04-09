@@ -15,4 +15,27 @@
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/webresources/*</url-pattern>
     </servlet-mapping>
+    <security-constraint>
+        <display-name>DevDom</display-name>
+        <web-resource-collection>
+            <web-resource-name>DevDomSkills</web-resource-name>
+            <description></description>
+            <url-pattern>/</url-pattern>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Debes ser un usuario para poder acceder</description>
+            <role-name>USERS</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Dev Dom Skills api</realm-name>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>USERS</role-name>
+    </security-role>
 </web-app>
