@@ -74,7 +74,7 @@ public class UserResource {
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     public List<User> findAll(@PathParam("pageNumber") @DefaultValue("1") int pageNumber) {
-        return user.findAll(pageNumber,PAGE_SIZE);        
+            return user.findAll(pageNumber,PAGE_SIZE);
     }    
     
     /**
@@ -97,8 +97,9 @@ public class UserResource {
             return Response.status(Response.Status.OK).entity(user.findByUserId(userID)).build();
         }catch(NoResultException ex){            
             return Response.status(Response.Status.NOT_FOUND)
-                       .entity(ex.getMessage()).type(MediaType.TEXT_PLAIN)
-                       .build();
+                        .entity(ex.getMessage())
+                        .type(MediaType.TEXT_PLAIN)
+                        .build();
         }
     }
     
