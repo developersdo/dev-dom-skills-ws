@@ -2,8 +2,10 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="jpa" transaction-type="JTA">
     <jta-data-source>devdomskills_amazon</jta-data-source>
-    <class>org.devdom.model.beans.Skillset</class>
-    <class>org.devdom.model.beans.User</class>
+    <class>org.devdom.model.dto.User</class>
+    <class>org.devdom.model.dto.Skillset</class>
+    <class>org.devdom.model.dto.Category</class>
+    <class>org.devdom.model.dto.Vote</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>

@@ -1,4 +1,4 @@
-package org.devdom.controller;
+package org.devdom.service;
 
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -12,12 +12,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.devdom.model.beans.User;
+import org.devdom.model.dto.User;
 import org.devdom.model.dao.UserDao;
 
 
 /**
- * Clase User.
+ * Clase UserResource.
  * 
  * Es la clase que maneja todas las llamadas a datos de usuarios,
  * dentro de esta clase se exponen todos los métodos necesarios para manejar 
@@ -121,10 +121,9 @@ public class UserResource {
     
     @GET
     @Path("/count")
-    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public String count(){
-        return String.valueOf(user.count());
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response count(){
+        return Response.status(Response.Status.OK).entity(String.valueOf(user.count())).build();
     }
             
     @POST

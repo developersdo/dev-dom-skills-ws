@@ -1,4 +1,4 @@
-package org.devdom.model.beans;
+package org.devdom.model.dto;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -13,8 +13,13 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author Carlos Vásquez Polanco
+ * Clase Skillset.
+ * 
+ * 
+ * 
+ * @author      Carlos Vásquez Polanco
+ * @version     %I%, %G%
+ * @since       0.1
  */
 @Entity
 @Table(name = "skillset_option")

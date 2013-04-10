@@ -1,5 +1,5 @@
 
-package org.devdom.controller;
+package org.devdom.service;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

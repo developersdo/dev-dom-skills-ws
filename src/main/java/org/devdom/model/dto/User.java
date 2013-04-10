@@ -1,4 +1,4 @@
-package org.devdom.model.beans;
+package org.devdom.model.dto;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
