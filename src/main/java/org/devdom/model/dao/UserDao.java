@@ -6,21 +6,28 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
-import org.devdom.model.beans.User;
+import org.devdom.model.dto.User;
 
 /**
- * @author Carlos Vásquez Polanco
+ * Clase UserDao.
+ * 
+ * 
+ * 
+ * @author      Carlos Vásquez Polanco
+ * @version     %I%, %G%
+ * @since       0.2
  */
 public class UserDao implements Serializable{
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     private boolean persistUser = false;
-    
-    /**
-     *
-     */
+
     public UserDao(){
     
+    }
+
+    public EntityManager getEntityManager(){
+        return emf.createEntityManager();
     }
 
     public UserDao(String firstName, String lastName, String picSmall, String picBig, String pic,
@@ -38,6 +45,10 @@ public class UserDao implements Serializable{
                 this.setPersisUser(Boolean.TRUE);
             }catch(PersistenceException ex){
                 this.setPersisUser(Boolean.FALSE);
+            } finally {
+                if (em != null) {
+                    em.close();
+                }
             }
     }
 
@@ -49,7 +60,9 @@ public class UserDao implements Serializable{
                     .setMaxResults(pageSize)
                     .getResultList();
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
     
@@ -59,8 +72,10 @@ public class UserDao implements Serializable{
             return (User) em.createNamedQuery("Users.findByUserId")
                     .setParameter("userId", id)
                     .getSingleResult();
-        }finally{
-            em.close();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
     }
     
@@ -78,8 +93,10 @@ public class UserDao implements Serializable{
             return (List<User>) em.createNamedQuery("Users.findByFirstName")
                     .setParameter("firstName",firstName)
                     .getResultList();
-        }finally{
-            em.close();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
     }
     
@@ -89,8 +106,10 @@ public class UserDao implements Serializable{
             return (List<User>) em.createNamedQuery("Users.findByLastName")
                     .setParameter("lastName", lastName)
                     .getResultList();
-        }finally{
-            em.close();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
     }
     
@@ -98,8 +117,10 @@ public class UserDao implements Serializable{
         EntityManager em = emf.createEntityManager();
         try{
             return String.valueOf(em.createNamedQuery("Users.count").getSingleResult());
-        }finally{
-        
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
     }
 

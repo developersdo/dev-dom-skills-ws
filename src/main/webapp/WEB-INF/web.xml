@@ -1,25 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- This web.xml file is not required when using Servlet 3.0 container, 
-     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html#d4e194 -->
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html#d4e194 --><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
         <servlet-name>Jersey Web Application</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>org.devdom.controller</param-value>
+            <param-value>org.devdom.service</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
-        <url-pattern>/webresources/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
     <security-constraint>
         <display-name>DevDom</display-name>
         <web-resource-collection>
             <web-resource-name>DevDomSkills</web-resource-name>
-            <description></description>
+            <description/>
             <url-pattern>/</url-pattern>
             <http-method>POST</http-method>
             <http-method>PUT</http-method>
@@ -38,4 +37,8 @@
         <description/>
         <role-name>USERS</role-name>
     </security-role>
+<persistence-unit-ref>
+<persistence-unit-ref-name>persistence-factory</persistence-unit-ref-name>
+<persistence-unit-name>jpa</persistence-unit-name>
+</persistence-unit-ref>
 </web-app>
