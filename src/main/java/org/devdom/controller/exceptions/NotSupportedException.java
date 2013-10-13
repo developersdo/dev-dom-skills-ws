@@ -1,4 +1,3 @@
-
 package org.devdom.controller.exceptions;
 
 import javax.ws.rs.WebApplicationException;

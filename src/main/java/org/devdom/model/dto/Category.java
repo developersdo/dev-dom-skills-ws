@@ -7,57 +7,73 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Direction;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
+import org.eclipse.persistence.annotations.StoredProcedureParameter;
 
 /**
  * Clase Category.
  * 
- * 
- * 
  * @author      Carlos Vásquez Polanco
- * @version     %I%, %G%
- * @since       0.1
  */
 @Entity
-@Table(name = "skillset_option_category")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
-    @NamedQuery(name = "Category.findByOptionCategoryId", query = "SELECT c FROM Category c WHERE c.optionCategoryId = :optionCategoryId"),
-    @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name"),
-    @NamedQuery(name = "Category.findByDescCategory", query = "SELECT c FROM Category c WHERE c.descCategory = :descCategory"),
-    @NamedQuery(name = "Category.findBySource", query = "SELECT c FROM Category c WHERE c.source = :source"),
-    @NamedQuery(name = "Category.count", query = "SELECT count(c) FROM Category c")})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery( name="Category.findCategoriesSortById", 
+                                procedureName="findCategoriesSortById",
+                                returnsResultSet=true,
+                                resultClass=Category.class,
+                                parameters={@StoredProcedureParameter(queryParameter="sort",
+                                                                      name="sort",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Category.findCategoriesSortByName", 
+                                procedureName="findCategoriesSortByName",
+                                returnsResultSet=true,
+                                resultClass=Category.class,
+                                parameters={@StoredProcedureParameter(queryParameter="sort",
+                                                                      name="sort",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
+                                ),
+    @NamedStoredProcedureQuery(
+                                name="Category.findCategoriesByName",
+                                procedureName="findCategoriesByName",
+                                returnsResultSet=true,
+                                resultClass=Category.class,
+                                parameters={@StoredProcedureParameter(queryParameter="name",
+                                                                      name="name",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
+                                )
+})
 public class Category implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
+    public static Category getById(int id){
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "option_category_id")
-    private Integer optionCategoryId;
+    @Column(name = "id")
+    private Integer id;
+    
     @Column(name = "name")
     private String name;
-    @Column(name = "desc_category")
-    private String descCategory;
-    @Column(name = "source")
-    private String source;
+    
+    @Column(name = "skills")
+    private Integer skills;
 
     public Category() {
     }
 
-    public Category(Integer optionCategoryId) {
-        this.optionCategoryId = optionCategoryId;
-    }
-
-    public Integer getOptionCategoryId() {
-        return optionCategoryId;
-    }
-
-    public void setOptionCategoryId(Integer optionCategoryId) {
-        this.optionCategoryId = optionCategoryId;
+    public Category(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -68,37 +84,36 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public String getDescCategory() {
-        return descCategory;
+    public Integer getId(){
+        return id;
     }
 
-    public void setDescCategory(String descCategory) {
-        this.descCategory = descCategory;
+    public void setId(Integer id){
+        this.id = id;
     }
 
-    public String getSource() {
-        return source;
+    public Integer getSkills(){
+        return skills;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setSkills(Integer skills){
+        this.skills = skills;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (optionCategoryId != null ? optionCategoryId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Category)) {
             return false;
         }
         Category other = (Category) object;
-        if ((this.optionCategoryId == null && other.optionCategoryId != null) || (this.optionCategoryId != null && !this.optionCategoryId.equals(other.optionCategoryId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -106,7 +121,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "org.devdom.model.beans.Category[ optionCategoryId=" + optionCategoryId + " ]";
+        return "org.devdom.model.dto.Category[ id=" + id + " ]";
     }
     
 }
