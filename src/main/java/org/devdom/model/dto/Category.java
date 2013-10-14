@@ -48,7 +48,18 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="name",
                                                                       direction=Direction.IN,
                                                                       type=String.class)}
-                                )
+                                ),
+    @NamedStoredProcedureQuery(
+                                name="Category.findCategoryById",
+                                procedureName="findCategoryById",
+                                returnsResultSet=true,
+                                resultClass=Category.class,
+                                parameters={@StoredProcedureParameter(
+                                                                      queryParameter="category_id",
+                                                                      name="category_id",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
+                               )
 })
 public class Category implements Serializable {
 
