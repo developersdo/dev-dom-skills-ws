@@ -65,9 +65,6 @@ public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static Category getById(int id){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -78,14 +75,7 @@ public class Category implements Serializable {
     private String name;
     
     @Column(name = "skills")
-    private Integer skills;
-
-    public Category() {
-    }
-
-    public Category(Integer id) {
-        this.id = id;
-    }
+    private Integer count;
 
     public String getName() {
         return name;
@@ -104,11 +94,11 @@ public class Category implements Serializable {
     }
 
     public Integer getSkills(){
-        return skills;
+        return count;
     }
 
     public void setSkills(Integer skills){
-        this.skills = skills;
+        this.count = skills;
     }
     
     @Override
