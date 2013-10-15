@@ -46,10 +46,10 @@ public class CategoryResource {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/sort/{field}/{sort}")
+    @Path("/sort-by/{field}/{sort}")
     public List<Category> findCategoriesSortById(@PathParam("field") @DefaultValue("id") String field,
                                                  @PathParam("sort") @DefaultValue("ASC") String sort) {
-        
+
         if(field.toLowerCase().equals("id")){
             return category.findCategoriesSortById(sort);
         }else if(field.toLowerCase().equals("name")){
