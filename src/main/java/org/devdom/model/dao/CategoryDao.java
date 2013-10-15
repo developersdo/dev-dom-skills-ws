@@ -59,12 +59,12 @@ public class CategoryDao implements Serializable {
         }
     }
     
-    public Category findCategoryById(int id){
+    public List<Category> findCategoryById(int id){
         EntityManager em=emf.createEntityManager();
         try{
-            return (Category) em.createNamedQuery("Category.findCategoryById")
+            return (List<Category>) em.createNamedQuery("Category.findCategoryById")
                     .setParameter("category_id", id)
-                    .getSingleResult();
+                    .getResultList();
         }finally{
             if (em != null) {
                 em.close();
