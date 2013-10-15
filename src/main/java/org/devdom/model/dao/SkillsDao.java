@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.devdom.model.dto.Category;
 import org.devdom.model.dto.Skills;
 
 /**
@@ -22,17 +21,23 @@ public class SkillsDao implements Serializable{
         return emf.createEntityManager();
     }
     
-    public List<Skills> findSkillsByCategoryId(int category_id, int currentPage, int rows){
+    public List<Skills> findSkillsByCategoryId(int category_id){
         
         EntityManager em = emf.createEntityManager();
         List<Skills> skills = null; 
         try{
-            int firstResult = (currentPage==1)?0:((currentPage-1)*rows)+1;
+
             skills = em.createNamedQuery("Skills.findSkillsByCategoryId")
-                                    .setParameter("category_id",category_id)
-                                    .setMaxResults(rows)
-                                    .setFirstResult(firstResult)
-                                    .getResultList();
+                       .setParameter("category_id",category_id)
+                       .getResultList();                       
+                        /* 
+                         setMaxResults() no funciona correctamente, 
+                         * ahora se creará una sub-lista,
+						 * es el workaround para la
+                         * delimitación de páginas a mostrar en JPA 
+                         * usando stored Procedures  
+                         */
+
         }catch(Exception ex){
             ex.printStackTrace();
         }
