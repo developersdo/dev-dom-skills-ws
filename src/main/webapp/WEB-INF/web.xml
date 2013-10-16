@@ -20,11 +20,15 @@
           <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
           <param-value>true</param-value>
       </init-param>
+      <init-param>
+          <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+          <param-value>org.devdom.filter.MediaTypeFilter</param-value>
+      </init-param>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>jersey-services</servlet-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
 
 </web-app>

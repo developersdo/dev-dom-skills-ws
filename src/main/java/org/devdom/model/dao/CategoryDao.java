@@ -10,7 +10,7 @@ import org.devdom.model.dto.Category;
 /**
  * Clase CategoryDao.
  * 
- * @author      Carlos Vásquez Polanco
+ * @author      Carlos Vï¿½squez Polanco
  */
 public class CategoryDao implements Serializable {
 
@@ -51,6 +51,19 @@ public class CategoryDao implements Serializable {
         try{
             return (List<Category>) em.createNamedQuery("Category.findCategoriesByName")
                     .setParameter("name",name)
+                    .getResultList();
+        }finally{
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public List<Category> findCategoryById(int id){
+        EntityManager em=emf.createEntityManager();
+        try{
+            return (List<Category>) em.createNamedQuery("Category.findCategoryById")
+                    .setParameter("category_id", id)
                     .getResultList();
         }finally{
             if (em != null) {

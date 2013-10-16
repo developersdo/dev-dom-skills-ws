@@ -3,9 +3,13 @@
   <persistence-unit name="jpa" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>org.devdom.model.dto.Category</class>
-    <properties>
+    <class>org.devdom.model.dto.Skills</class>
+    <class>org.devdom.model.dto.Pagination</class>
+    <class>org.devdom.model.dto.Skillset</class>
+    <validation-mode>CALLBACK</validation-mode>
+	<properties>
       <property name="javax.persistence.jdbc.url" value="${url}"/>
-      <property name="javax.persistence.jdbc.password" value="${password}"/>
+      <property name="javax.persistence.jdbc.password" value="{$pasword}"/>
       <property name="javax.persistence.jdbc.driver" value="${driver}"/>
       <property name="javax.persistence.jdbc.user" value="${user}"/>
       <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
