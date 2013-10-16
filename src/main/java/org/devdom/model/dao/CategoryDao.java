@@ -10,7 +10,7 @@ import org.devdom.model.dto.Category;
 /**
  * Clase CategoryDao.
  * 
- * @author      Carlos V�squez Polanco
+ * @author      Carlos Vásquez Polanco
  */
 public class CategoryDao implements Serializable {
 
@@ -58,7 +58,7 @@ public class CategoryDao implements Serializable {
             }
         }
     }
-
+    
     public List<Category> findCategoryById(int id){
         EntityManager em=emf.createEntityManager();
         try{
