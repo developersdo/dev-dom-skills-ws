@@ -9,7 +9,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jersey-version>1.17.1</jersey-version>
         <jetty-version>8.0.0.M3</jetty-version>
-        <eclipselink-version>2.3.2</eclipselink-version>
     </properties>
     <dependencies>
         <!-- Jetty -->
@@ -65,15 +64,20 @@
             <version>5.1.6</version>
         </dependency>
         <dependency>
+            <groupId>toplink.essentials</groupId>
+            <artifactId>toplink-essentials</artifactId>
+            <version>2.1-60</version>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
-            <version>${eclipselink-version}</version>
+            <version>2.3.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-            <version>${eclipselink-version}</version>
+            <version>2.3.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -130,6 +134,7 @@
             <version>SNAPSHOT</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -198,10 +203,14 @@
             <layout>default</layout>
         </repository>
         <repository>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
+            <id>EclipseLink</id>
+            <url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
+        </repository>
+        <repository>
+            <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
             <id>eclipselink</id>
             <layout>default</layout>
-            <name>Repository for library EclipseLink (JPA 2.1)</name>
+            <name>Repository for library EclipseLink (JPA 2.0)</name>
         </repository>
         <repository>
             <id>jetty-releases</id>

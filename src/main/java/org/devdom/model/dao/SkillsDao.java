@@ -45,4 +45,21 @@ public class SkillsDao implements Serializable{
         return skills;
     }
     
+    public List<Skills> findSkillsById(int id){
+
+        EntityManager em = emf.createEntityManager();
+        
+        List<Skills> skills = null; 
+        
+        try{
+            skills = em.createNamedQuery("Skills.findSkillsById")
+                 .setParameter("skill_id",id)
+                 .getResultList();
+         }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        return skills;
+
+    }
 }

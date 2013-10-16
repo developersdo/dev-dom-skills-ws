@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.eclipse.persistence.annotations.Direction;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
@@ -20,7 +19,6 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
  * @author      Carlos Vásquez Polanco
  */
 @Entity
-@Table(name="skillset_option")
 @XmlRootElement
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery( name="Skills.findSkillsByCategoryId", 
@@ -29,6 +27,15 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 resultClass=Skills.class,
                                 parameters={@StoredProcedureParameter(queryParameter="category_id",
                                                                       name="category_id",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Skills.findSkillsById", 
+                                procedureName="findSkillsById",
+                                returnsResultSet=true,
+                                resultClass=Skills.class,
+                                parameters={@StoredProcedureParameter(queryParameter="skill_id",
+                                                                      name="skill_id",
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)}
                                 )
