@@ -26,25 +26,28 @@ public class SkillsetResource {
     SkillsDao skillsDao = new SkillsDao();
     CategoryDao category = new CategoryDao();
     private final int ROWS_PER_PAGE = 10;
-    
+    private int from = 0;
+    private int to = 0;
+    private int rowCount = 0;
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("by/category/id/{id}")
     public Skillset findSkillsByCategoryId(@PathParam("id") int id,
                                            @HeaderParam("Accept") String acceptHeader
                                             ){
+
         int currentPage = 1; //Siempre se llama la primera página desde este método
-        int pageSize = 0;
-        int currentRow = 0;
-        
-        System.out.println("aceept "+ acceptHeader );
-        currentRow = (currentPage==1)?0:currentPage*ROWS_PER_PAGE;
+
+        from = (currentPage==1)?0:currentPage*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
         
         List<Skills> skills = skillsDao.findSkillsByCategoryId(id);
-        pageSize = skills.size();
+        rowCount = skills.size();
         
-        skills = skills.subList(currentRow, currentRow+ROWS_PER_PAGE); 
-        Pagination pagination = new Pagination(currentPage,ROWS_PER_PAGE,id,pageSize,acceptHeader);
+        to = (to>rowCount)?rowCount:to;
+        
+        skills = skills.subList(from,to); 
+        Pagination pagination = new Pagination(currentPage,ROWS_PER_PAGE,id,rowCount,acceptHeader);
         
         skillset.setPagination(pagination);
         skillset.setCategory(category.findCategoryById(id));
