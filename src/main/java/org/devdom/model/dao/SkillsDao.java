@@ -29,6 +29,42 @@ public class SkillsDao{
         return emf.createEntityManager();
     }
     
+    public MasterSkillset getSkillsByDeveloperId(String id, String acceptHeader, String path) {
+        
+        return getSkillsByDeveloperId(id,acceptHeader,path,1);
+    }
+    
+    public MasterSkillset getSkillsByDeveloperId(String developerId, String acceptHeader, String path, int page) {
+        
+        DeveloperDao developerDao = new DeveloperDao();
+        currentPage = page;
+        from = (currentPage-1)*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
+        
+        List<Skills> skills = this.findSkillsByDeveloperId(developerId);
+        
+        rowCount = skills.size();
+        
+        to = (to>rowCount)?rowCount:to;
+        
+        skills = skills.subList(from,to); 
+        
+        Pagination pagination = new Pagination();
+        pagination.setPositionCurrentPage(currentPage);
+        pagination.setRowsPerPages(ROWS_PER_PAGE);
+        pagination.setTotalRow(rowCount);
+        pagination.setDataType(acceptHeader);
+        pagination.setAbsolutePath(path);
+        pagination.generate();
+
+        skillset.setPagination(pagination);
+        skillset.setDevelopers(developerDao.findDeveloperById(developerId));
+        skillset.setSkills(skills);
+
+        return skillset;
+
+    }
+        
     public MasterSkillset getSkillsByCategoryId(int id, String acceptHeader, String path) {
         
         return getSkillsByCategoryId(id,acceptHeader,path,1);
@@ -50,7 +86,6 @@ public class SkillsDao{
         Pagination pagination = new Pagination();
         pagination.setPositionCurrentPage(currentPage);
         pagination.setRowsPerPages(ROWS_PER_PAGE);
-        pagination.setResourceId(0);
         pagination.setTotalRow(rowCount);
         pagination.setDataType(acceptHeader);
         pagination.setAbsolutePath(path);
@@ -72,6 +107,23 @@ public class SkillsDao{
 
             skills = em.createNamedQuery("Skills.findSkillsByCategoryId")
                        .setParameter("category_id",category_id)
+                       .getResultList();
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        return skills;
+    }
+    
+    private List<Skills> findSkillsByDeveloperId(String developerId){
+        
+        EntityManager em = emf.createEntityManager();
+        List<Skills> skills = null; 
+        try{
+
+            skills = em.createNamedQuery("Skills.findSkillsByDeveloperId")
+                       .setParameter("developer_id",developerId)
                        .getResultList();
 
         }catch(Exception ex){

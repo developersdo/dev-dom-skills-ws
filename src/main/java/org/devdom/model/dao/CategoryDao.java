@@ -58,7 +58,6 @@ public class CategoryDao implements Serializable {
         Pagination pagination = new Pagination();
         pagination.setPositionCurrentPage(currentPage);
         pagination.setRowsPerPages(ROWS_PER_PAGE);
-        pagination.setResourceId(0);
         pagination.setTotalRow(rowCount);
         pagination.setDataType(acceptHeader);
         pagination.setAbsolutePath(path);
@@ -94,7 +93,6 @@ public class CategoryDao implements Serializable {
         Pagination pagination = new Pagination();
         pagination.setPositionCurrentPage(currentPage);
         pagination.setRowsPerPages(ROWS_PER_PAGE);
-        pagination.setResourceId(0);
         pagination.setTotalRow(rowCount);
         pagination.setDataType(acceptHeader);
         pagination.setAbsolutePath(path);
@@ -162,7 +160,6 @@ public class CategoryDao implements Serializable {
         Pagination pagination = new Pagination();
         pagination.setPositionCurrentPage(currentPage);
         pagination.setRowsPerPages(ROWS_PER_PAGE);
-        pagination.setResourceId(0);
         pagination.setTotalRow(rowCount);
         pagination.setDataType(acceptHeader);
         pagination.setAbsolutePath(path);
