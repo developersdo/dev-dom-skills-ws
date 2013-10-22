@@ -28,6 +28,9 @@ public class MasterSkillset implements Serializable {
     @OneToMany
     private List<Skills> skills;
     
+    @OneToMany
+    private List<Developer> developers;
+    
     @OneToOne
     private Pagination pagination;
 
@@ -65,9 +68,18 @@ public class MasterSkillset implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    /**
+     * @return the developers
+     */
+    public List<Developer> getDevelopers() {
+        return developers;
     }
-    
-    
+
+    /**
+     * @param developers the developers to set
+     */
+    public void setDevelopers(List<Developer> developers) {
+        this.developers = developers;
+    }
+      
 }
