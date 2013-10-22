@@ -65,5 +65,32 @@ public class SkillsetResource {
         return skillsDao.findSkillsById(id);
 
     }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("by/developer/id/{id}")
+    public MasterSkillset findSkillsByDeveloperId(@PathParam("id") String id,
+                                       @HeaderParam("Accept") String acceptHeader,
+                                       @Context UriInfo uri){
+        
+        String path = uri.getAbsolutePath().toString();
+        
+        return skillsDao.getSkillsByDeveloperId(id, acceptHeader, path);
+        
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("by/developer/id/{id}/page/{page}")
+    public MasterSkillset findSkillsByDeveloperIdAndPage(@PathParam("id") String id,
+                                       @PathParam("page") @DefaultValue("1") int page,
+                                       @HeaderParam("Accept") String acceptHeader,
+                                       @Context UriInfo uri){
+        
+        String path = uri.getAbsolutePath().toString();
+        
+        return skillsDao.getSkillsByDeveloperId(id, acceptHeader, path, page);
+        
+    }
    
 }
