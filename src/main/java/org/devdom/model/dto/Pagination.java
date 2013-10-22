@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import org.devdom.util.IPagination;
 
 /**
  *
@@ -19,76 +19,81 @@ public class Pagination implements Serializable {
     private int totalRows = 1;
     private int totalPages = 1;
     private int rowsPerPages = 1;
-    private String dataType = "";
+    private int positionCurrentPage;
+    private int positionRowsPerPages;
+    private int positionCategoryId;
     private int categoryId;
-
+    private int resourceId;
     private Link previousPage;
     private Link currentPage;
     private Link firstPage;
     private Link nextPage;
     private Link lastPage;
-    
-    
+
+    private String resourceType;
+    private String absolutePath;
+    private String dataType = "";   
+    private String ext = "";
     
     public Pagination() {
     }
     
-    public Pagination(int currentPage, int rowsPerPages, int categoryId,int size, String dataType){
+    public void generate(){
 
-        String ext = "";
-        String url = "";
-        String[] labels = {""};
-        
-        if(dataType.contains("application/xml")){
-            ext = ".xml";
-        }else if(dataType.contains("application/json")){
-            ext = ".json";
+        if(this.dataType.contains(IPagination.DEFAULT_APPLICATION_XML)){
+            setExt(IPagination.APPLICATION_XML_FILE);
+        }else if(this.dataType.contains(IPagination.DEFAULT_APPLICATION_JSON)){
+            setExt(IPagination.APPLICATION_JSON_FILE);
         }
-        this.categoryId = categoryId;
-        if(size>0){
-            this.rowsPerPages = rowsPerPages;
-            this.totalRows = size;
-            this.totalPages = (this.totalRows / this.rowsPerPages) + (( (this.totalRows % this.rowsPerPages) > 0 )?1:0);
-            
-            int previous = (currentPage-1)>0?(currentPage-1):1;
-            int next = (currentPage+1)<this.totalPages?(currentPage+1):this.totalPages;
+
+        if(getTotalRows()>0){
+
+            this.totalPages = (getTotalRows() / getRowsPerPages()) + (( (getTotalRows() % getRowsPerPages()) > 0 )?1:0);
+
+            int previous = (getPositionCurrentPage()-1)>0?(getPositionCurrentPage()-1):1;
+            int next = (getPositionCurrentPage()+1)<this.totalPages?(getPositionCurrentPage()+1):this.totalPages;
             int last = this.totalPages;
             
             //Current Page          
-            this.currentPage = this.linkGenerator(1,categoryId,currentPage,"Current Page", ext);   
+            this.currentPage = this.linkGenerator(1,getPositionCurrentPage(),IPagination.CAPTION_CURRENT);   
             
             //Previous Page          
-            this.previousPage = this.linkGenerator(2,categoryId,previous,"Previous Page", ext);
+            this.previousPage = this.linkGenerator(2,previous,IPagination.CAPTION_PREVIOUS);
             
             //Next Page          
-            this.nextPage = this.linkGenerator(3,categoryId,next,"Next Page", ext);
+            this.nextPage = this.linkGenerator(3,next,IPagination.CAPTION_NEXT);
             
             //Last Page          
-            this.lastPage = this.linkGenerator(4,categoryId,last,"Last Page", ext);
+            this.lastPage = this.linkGenerator(4,last,IPagination.CAPTION_LAST);
             
             //First Page
-            this.firstPage = this.linkGenerator(5,categoryId,1,"First Page", ext);
+            this.firstPage = this.linkGenerator(5,1,IPagination.CAPTION_FIRST);
             
         }
+
     }
-    
-    private Link linkGenerator(int id, int categoryId, int page, String label, String ext){
-        String url = "/api/skill/by/category/id/"+categoryId+"/page/"+page+ext;           
-        return new Link(id,label, url, dataType); 
+
+    private Link linkGenerator(int id, int page, String label){
+        String url = getAbsolutePath();
+
+        if(url.matches(IPagination.PATTERN_MATCH)){
+            url = url.replaceAll(IPagination.PATTERN_REPLACE,"/page/"+page);
+        }else if(getTotalRow()>IPagination.ROWS_PER_PAGE){
+            url += "/page/"+page;
+        }
+        url+=getExt();
+        return new Link(id,label, url, dataType);
     }
-    
+
     /**
      * @return the totalRows
      */
     public int getTotalRow() {
-        return totalRows;
+        return getTotalRows();
     }
 
-    /**
-     * @param totalRows the totalRows to set
-     */
     public void setTotalRow(int totalRow) {
-        this.totalRows = totalRow;
+        this.setTotalRows(totalRow);
     }
 
     /**
@@ -127,101 +132,135 @@ public class Pagination implements Serializable {
     }
 
     /**
-     * @param dateType the dataType to set
-     */
-    public void setDateType(String dataType) {
-        this.setDataType(dataType);
-    }
-
-    /**
      * @param dataType the dataType to set
      */
     public void setDataType(String dataType) {
         this.dataType = dataType;
     }
 
-    /**
-     * @return the previousPage
-     */
     public Link getPreviousPage() {
         return previousPage;
     }
 
-    /**
-     * @param previousPage the previousPage to set
-     */
     public void setPreviousPage(Link previousPage) {
         this.previousPage = previousPage;
     }
 
-    /**
-     * @return the currentPage
-     */
     public Link getCurrentPage() {
         return currentPage;
     }
 
-    /**
-     * @param currentPage the currentPage to set
-     */
     public void setCurrentPage(Link currentPage) {
         this.currentPage = currentPage;
     }
 
-    /**
-     * @return the firstPage
-     */
     public Link getFirstPage() {
         return firstPage;
     }
 
-    /**
-     * @param firstPage the firstPage to set
-     */
     public void setFirstPage(Link firstPage) {
         this.firstPage = firstPage;
     }
 
-    /**
-     * @return the nextPage
-     */
     public Link getNextPage() {
         return nextPage;
     }
 
-    /**
-     * @param nextPage the nextPage to set
-     */
     public void setNextPage(Link nextPage) {
         this.nextPage = nextPage;
     }
 
-    /**
-     * @return the lastPage
-     */
     public Link getLastPage() {
         return lastPage;
     }
 
-    /**
-     * @param lastPage the lastPage to set
-     */
     public void setLastPage(Link lastPage) {
         this.lastPage = lastPage;
     }
 
-    /**
-     * @return the categoryId
-     */
     public int getCategoryId() {
         return categoryId;
     }
 
-    /**
-     * @param categoryId the categoryId to set
-     */
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public int getTotalRows() {
+        return totalRows;
+    }
+
+    public void setTotalRows(int totalRows) {
+        this.totalRows = totalRows;
+    }
+
+    public int getPositionCurrentPage() {
+        return positionCurrentPage;
+    }
+
+    public void setPositionCurrentPage(int positionCurrentPage) {
+        this.positionCurrentPage = positionCurrentPage;
+    }
+
+    public int getPositionRowsPerPages() {
+        return positionRowsPerPages;
+    }
+
+    public void setPositionRowsPerPages(int positionRowsPerPages) {
+        this.positionRowsPerPages = positionRowsPerPages;
+    }
+
+    public int getPositionCategoryId() {
+        return positionCategoryId;
+    }
+
+    public void setPositionCategoryId(int positionCategoryId) {
+        this.positionCategoryId = positionCategoryId;
+    }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public String getAbsolutePath() {
+        return absolutePath;
+    }
+
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
+    }
+
+    /**
+     * @return the resourceId
+     */
+    public int getResourceId() {
+        return resourceId;
+    }
+
+    /**
+     * @param resourceId the resourceId to set
+     */
+    public void setResourceId(int resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    /**
+     * @return the ext
+     */
+    public String getExt() {
+        return ext;
+    }
+
+    /**
+     * @param ext the ext to set
+     */
+    public void setExt(String ext) {
+        this.ext = ext;
     }
     
 }
