@@ -29,13 +29,14 @@ public class SkillsDao{
         return emf.createEntityManager();
     }
     
-    public MasterSkillset getSkillsByCategoryId(int id, String acceptHeader, String path, int page) {
-        this.currentPage = page;
-        return getSkillsByCategoryId(id,acceptHeader,path);
+    public MasterSkillset getSkillsByCategoryId(int id, String acceptHeader, String path) {
+        
+        return getSkillsByCategoryId(id,acceptHeader,path,1);
     }
 
-    public MasterSkillset getSkillsByCategoryId(int categoryId, String acceptHeader, String path){
+    public MasterSkillset getSkillsByCategoryId(int categoryId, String acceptHeader, String path, int page){
         
+        currentPage = page;
         from = (currentPage-1)*ROWS_PER_PAGE;
         to = (from+ROWS_PER_PAGE);
         
