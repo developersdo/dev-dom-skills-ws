@@ -33,50 +33,53 @@ public class CategoryDao implements Serializable {
     public String getRealPath(String path){
         return (path.lastIndexOf("/")==(path.length()-1))?path.substring(0, path.lastIndexOf("/")):path;
     }
-    
-    public MasterCategory getMasterCategorySortById(String desc, String acceptHeader, String url, int page) {
-        this.currentPage = page;
-        return getMasterCategorySortById(desc,acceptHeader,url);
+
+    public MasterCategory getMasterCategorySortById(String sort,String acceptHeader, String url){
+
+        return getMasterCategorySortById(sort,acceptHeader,url,1);
+        
     }
-    
-    public MasterCategory getMasterCategorySortByName(String desc, String acceptHeader, String url, int page) {
-        this.currentPage = page;
-        return getMasterCategorySortByName(desc,acceptHeader,url);
+
+    public MasterCategory getMasterCategorySortById(String sort, String acceptHeader, String url, int page){
+        
+        String path = getRealPath(url);
+        currentPage = page;
+        
+        from = (currentPage-1)*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
+        
+        List<Category> category = findCategoriesSortById("desc");
+        rowCount = category.size();
+
+        to = (to>rowCount)?rowCount:to;
+
+        category = category.subList(from, to);
+
+        Pagination pagination = new Pagination();
+        pagination.setPositionCurrentPage(currentPage);
+        pagination.setRowsPerPages(ROWS_PER_PAGE);
+        pagination.setResourceId(0);
+        pagination.setTotalRow(rowCount);
+        pagination.setDataType(acceptHeader);
+        pagination.setAbsolutePath(path);
+        pagination.generate();
+        
+        masterCategory.setCategory(category);
+        masterCategory.setPagination(pagination);
+
+        return masterCategory;
     }
     
     public MasterCategory getMasterCategorySortByName(String sort,String acceptHeader, String url){
 
-        String path = getRealPath(url);
-        currentPage = 1;
-
-        from = (currentPage-1)*ROWS_PER_PAGE;
-        to = (from+ROWS_PER_PAGE);
+        return getMasterCategorySortByName(sort,acceptHeader,url,1);
         
-        List<Category> category = findCategoriesSortById("desc");
-        rowCount = category.size();
-
-        to = (to>rowCount)?rowCount:to;
-
-        category = category.subList(from, to);
-
-        Pagination pagination = new Pagination();
-        pagination.setPositionCurrentPage(currentPage);
-        pagination.setRowsPerPages(ROWS_PER_PAGE);
-        pagination.setResourceId(0);
-        pagination.setTotalRow(rowCount);
-        pagination.setDataType(acceptHeader);
-        pagination.setAbsolutePath(path);
-        pagination.generate();
-        
-        masterCategory.setCategory(category);
-        masterCategory.setPagination(pagination);
-
-        return masterCategory;
     }
     
-    public MasterCategory getMasterCategorySortById(String sort,String acceptHeader, String url){
-
+    public MasterCategory getMasterCategorySortByName(String sort, String acceptHeader, String url, int page){
+        
         String path = getRealPath(url);
+        currentPage = page;
 
         from = (currentPage-1)*ROWS_PER_PAGE;
         to = (from+ROWS_PER_PAGE);
@@ -101,6 +104,7 @@ public class CategoryDao implements Serializable {
         masterCategory.setPagination(pagination);
 
         return masterCategory;
+        
     }
 
     private List<Category> findCategoriesSortById(String sort){
@@ -142,14 +146,14 @@ public class CategoryDao implements Serializable {
         }
     }
     
-    public MasterCategory getMasterCategoryById(int categoryId, String acceptHeader, String path, int page) {
+    public MasterCategory getMasterCategoryById(int categoryId, String acceptHeader, String path) {
 
-        this.currentPage = page;
-        return this.getMasterCategoryById(categoryId, acceptHeader, path);
+        return this.getMasterCategoryById(categoryId, acceptHeader, path,1);
     }
     
-    public MasterCategory getMasterCategoryById(int id, String acceptHeader, String path){
+    public MasterCategory getMasterCategoryById(int id, String acceptHeader, String path, int page){
         
+        currentPage = page;
         from = (currentPage-1)*ROWS_PER_PAGE;
         to = (from+ROWS_PER_PAGE);
         
