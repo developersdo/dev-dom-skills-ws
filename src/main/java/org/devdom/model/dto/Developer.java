@@ -8,6 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Direction;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
+import org.eclipse.persistence.annotations.StoredProcedureParameter;
 
 /**
  *
@@ -15,6 +19,31 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery( name="Developer.findDevelopersBySkillId", 
+                                procedureName="findDevelopersBySkillId",
+                                returnsResultSet=true,
+                                resultClass=Developer.class,
+                                parameters={@StoredProcedureParameter(queryParameter="skill_id",
+                                                                      name="skill_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Developer.findDeveloperById", 
+                                procedureName="findDeveloperById",
+                                returnsResultSet=true,
+                                resultClass=Developer.class,
+                                parameters={@StoredProcedureParameter(queryParameter="id",
+                                                                      name="developer_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Developer.findAllDevelopers", 
+                                procedureName="findAllDevelopers",
+                                returnsResultSet=true,
+                                resultClass=Developer.class
+                                )
+})
 public class Developer implements Serializable {
     
     @Id
@@ -24,13 +53,13 @@ public class Developer implements Serializable {
     private Integer id;
     
     @Column(name = "first_name")
-    private Integer firstName;
+    private String firstName;
 
     @Column(name = "last_name")
-    private Integer lastName;
+    private String lastName;
     
-    @Column(name = "pic_cover")
-    private Integer picture;
+    @Column(name = "pic")
+    private String picture;
     
     public Integer getId() {
         return id;
@@ -43,42 +72,42 @@ public class Developer implements Serializable {
     /**
      * @return the firstName
      */
-    public Integer getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
     /**
      * @param firstName the firstName to set
      */
-    public void setFirstName(Integer firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
      * @return the lastName
      */
-    public Integer getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
     /**
      * @param lastName the lastName to set
      */
-    public void setLastName(Integer lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
      * @return the picture
      */
-    public Integer getPicture() {
+    public String getPicture() {
         return picture;
     }
 
     /**
      * @param picture the picture to set
      */
-    public void setPicture(Integer picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
     
