@@ -38,6 +38,15 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="skill_id",
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Skills.findSkillsByDeveloperId", 
+                                procedureName="findSkillsByDeveloperId",
+                                returnsResultSet=true,
+                                resultClass=Skills.class,
+                                parameters={@StoredProcedureParameter(queryParameter="developer_id",
+                                                                      name="developer_id",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
                                 )
 })
 public class Skills implements Serializable{
