@@ -102,18 +102,5 @@ public class CategoryResource {
         return categoryDao.getMasterCategoryById(categoryId, acceptHeader, path);
 
     }
-    
-    @GET
-    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/id/{category_id}/page/{page}")
-    public MasterCategory findCategoryById(@PathParam("category_id") @DefaultValue("0") int categoryId,
-                                           @HeaderParam("Accept") String acceptHeader,
-                                           @PathParam("page") @DefaultValue("1") int page,
-                                           @Context UriInfo uri){
 
-        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
-
-        return categoryDao.getMasterCategoryById(categoryId, acceptHeader, path, page);
-
-    }
 }
