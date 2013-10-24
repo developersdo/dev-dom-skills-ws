@@ -30,7 +30,7 @@ public class DeveloperResource {
                                                  @HeaderParam("Accept") String acceptHeader,
                                                  @Context UriInfo uri
                                             ){
-        
+
         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
         
         return developerDao.findAllDevelopers(acceptHeader, path);

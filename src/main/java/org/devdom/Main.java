@@ -39,6 +39,8 @@ public class Main {
         root.setContextPath("/");
         root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
         root.setResourceBase(webappDirLocation);
+        root.setDisplayName("Dev Dom - Skills");
+        root.setHandler(servletHandler);
 
         // Parent loader priority is a class loader setting that Jetty accepts.
         // By default Jetty will behave like most web containers in that it will
@@ -48,7 +50,7 @@ public class Main {
         root.setParentLoaderPriority(true);
         //server.setHandler(server);
         server.addBean(errorHandler);
-        server.setHandler(servletHandler);
+        //server.setHandler(servletHandler);
 
         server.setHandler(root);
 

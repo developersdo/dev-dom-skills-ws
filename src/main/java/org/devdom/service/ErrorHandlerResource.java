@@ -1,29 +1,46 @@
 package org.devdom.service;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.devdom.controller.exceptions.NotFoundException;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
- * @author Carlos Vasquez Polanco
+ * @author Carlos Vásquez Polanco
  */
+@Path("/error")
 public class ErrorHandlerResource extends HttpServlet{
-    
-    private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-        
-        int status = httpServletResponse.getStatus();
-        String contentType = httpServletResponse.getContentType();
-        throw new NotFoundException();
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/404")
+    public Response index(@HeaderParam("Accept") String acceptHeader,
+                                                 @Context UriInfo uri){
+
+        return Response.status(Status.BAD_REQUEST)
+                       .entity("pagina no encontrada!")
+                       .type(MediaType.TEXT_PLAIN)
+                       .build();
 
     }
     
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/500/IllegalArgument")
+    public Response IllegalArgument(@HeaderParam("Accept") String acceptHeader,
+                                                 @Context UriInfo uri){
+
+        return Response.status(Status.BAD_REQUEST)
+                       .entity("argumento no permitido!")
+                       .type(MediaType.TEXT_PLAIN)
+                       .build();
+
+    }
 }
