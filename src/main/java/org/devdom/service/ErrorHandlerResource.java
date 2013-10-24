@@ -1,6 +1,5 @@
 package org.devdom.service;
 
-import javax.servlet.http.HttpServlet;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
@@ -16,7 +15,7 @@ import javax.ws.rs.core.UriInfo;
  * @author Carlos Vásquez Polanco
  */
 @Path("/error")
-public class ErrorHandlerResource extends HttpServlet{
+public class ErrorHandlerResource{
 
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
@@ -43,4 +42,18 @@ public class ErrorHandlerResource extends HttpServlet{
                        .build();
 
     }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/500/PersistenceUnitLoading")
+    public Response PersistenceUnitLoading(@HeaderParam("Accept") String acceptHeader,
+                                                 @Context UriInfo uri){
+
+        return Response.status(Status.BAD_REQUEST)
+                       .entity("no pudo ser cargado el archivo de persistencia. Contacte al administrador :) ")
+                       .type(MediaType.TEXT_PLAIN)
+                       .build();
+
+    }
+    
 }

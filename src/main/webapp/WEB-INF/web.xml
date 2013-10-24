@@ -39,5 +39,9 @@
         <exception-type>java.lang.IllegalArgumentException</exception-type>
         <location>/api/error/500/IllegalArgument</location>
     </error-page>
+    <error-page>
+        <exception-type>oracle.toplink.essentials.exceptions.PersistenceUnitLoadingException</exception-type>
+        <location>/api/error/500/PersistenceUnitLoading</location>
+    </error-page>
 
 </web-app>
