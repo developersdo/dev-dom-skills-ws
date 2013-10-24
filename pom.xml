@@ -16,134 +16,116 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
             <version>${jetty-version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.aggregate</groupId>
             <artifactId>jetty-all-server</artifactId>
             <version>${jetty-version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
             <version>${jetty-version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <!-- Jersey -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
             <version>${jersey-version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>${jersey-version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-bundle</artifactId>
             <version>${jersey-version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>${jersey-version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-atom</artifactId>
             <version>${jersey-version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <version>2.0</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.6</version>
+            <version>5.1.26</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>toplink.essentials</groupId>
             <artifactId>toplink-essentials</artifactId>
             <version>2.1-60</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
-
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
             <version>2.3.2</version>
-            <scope>provided</scope>
-        </dependency>
+            <scope>compile</scope>
+            <type>jar</type>
+        </dependency>        
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
             <version>2.3.2</version>
-            <scope>provided</scope>
-        </dependency>
-        
+            <scope>compile</scope>
+            <type>jar</type>
+        </dependency>        
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
-            <version>2.0.3</version>
-            <scope>provided</scope>
+            <version>2.1.0</version>
+            <scope>compile</scope>
+            <type>jar</type>
         </dependency>
-
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.core</artifactId>
+            <version>2.5.1</version>
+            <scope>compile</scope>
+            <type>jar</type>
+        </dependency>
         <!-- jUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <scope>test</scope>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>org.eclipse.persistence.antlr</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>org.eclipse.persistence.asm</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>org.eclipse.persistence.core</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-       
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>org.eclipse.persistence.jpa</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>org.eclipse.persistence.jpa.modelgen</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>org.eclipse.persistence.moxy</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>org.eclipse.persistence.oracle</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>javax.persistence</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        -->
-    </dependencies>
-
+        </dependency>        
+    </dependencies>   
     <build>
         <plugins>
             <plugin>
@@ -163,8 +145,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -200,31 +182,21 @@
     </build>
     <repositories>
         <repository>
-            <id>unknown-jars-temp-repo</id>
-            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
-            <url>file:${project.basedir}/lib</url>
-        </repository>
-        <repository>
             <id>m2.java.net</id>
             <name>Java.net Maven 2 Repository</name>
-            <url>http://download.java.net/maven/2</url>
             <layout>default</layout>
-        </repository>
+            <url>http://download.java.net/maven/2</url>            
+        </repository>        
         <repository>
-            <id>EclipseLink</id>
-            <url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
-        </repository>
-        <repository>
-            <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
             <id>eclipselink</id>
             <layout>default</layout>
             <name>Repository for library EclipseLink (JPA 2.0)</name>
-        </repository>
+            <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
+        </repository>        
         <repository>
             <id>jetty-releases</id>
             <name>Jetty Releases</name>
             <url>https://oss.sonatype.org/content/repositories/jetty-releases</url>
-        </repository>
-        
+        </repository>        
     </repositories>
 </project>
