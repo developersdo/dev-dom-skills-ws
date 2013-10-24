@@ -17,7 +17,7 @@ public class NotSupportedException extends WebApplicationException {
 
     public NotSupportedException(String message){
          super(Response.status(Status.NOT_FOUND)
-                       .entity(message+"otro texto").type(MediaType.TEXT_PLAIN)
+                       .entity(message).type(MediaType.TEXT_PLAIN)
                        .build());
     }
 
@@ -38,6 +38,7 @@ public class NotSupportedException extends WebApplicationException {
     /**
      * @return the message
      */
+    @Override
     public String getMessage() {
         return message;
     }

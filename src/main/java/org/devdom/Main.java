@@ -1,6 +1,8 @@
 package org.devdom;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ErrorHandler;
+import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
@@ -18,6 +20,12 @@ public class Main {
     public static void main(String[] args) throws Exception{
         String webappDirLocation = "src/main/webapp/";
         
+        ErrorHandler errorHandler = new ErrorHandler();
+        errorHandler.setShowStacks(true);
+        
+        ServletHandler servletHandler = new ServletHandler();
+        servletHandler.addServletWithMapping(org.devdom.service.ErrorHandlerResource.class.getName(),"/");
+        
         // The port that we should run on can be set into an environment variable
         // Look for that variable and default to 8080 if it isn't there.
         String webPort = System.getenv("PORT");
@@ -31,6 +39,8 @@ public class Main {
         root.setContextPath("/");
         root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
         root.setResourceBase(webappDirLocation);
+        root.setDisplayName("Dev Dom - Skills");
+        root.setHandler(servletHandler);
 
         // Parent loader priority is a class loader setting that Jetty accepts.
         // By default Jetty will behave like most web containers in that it will
@@ -38,6 +48,9 @@ public class Main {
         // container. Setting parent loader priority to true changes this behavior.
         // Read more here: http://wiki.eclipse.org/Jetty/Reference/Jetty_Classloading
         root.setParentLoaderPriority(true);
+        //server.setHandler(server);
+        server.addBean(errorHandler);
+        //server.setHandler(servletHandler);
 
         server.setHandler(root);
 

@@ -1,76 +1,106 @@
 package org.devdom.service;
 
 import org.devdom.model.dao.CategoryDao;
-import org.devdom.model.dto.Category;
-import java.util.List;
-import javax.persistence.NoResultException;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import org.devdom.model.dto.MasterCategory;
 
 /** 
- * Clase CategoryResource.
  * 
  * @author      Carlos Vásquez Polanco
  */
 @Path("/category")
 public class CategoryResource {
 
-    CategoryDao category = new CategoryDao();
+    CategoryDao categoryDao = new CategoryDao();
+    MasterCategory masterCategory = new MasterCategory();
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public List<Category> index(){
-        return category.findCategoriesSortById("desc");
+    public MasterCategory index(@HeaderParam("Accept") String acceptHeader,
+                                @Context UriInfo uri){
+
+        String url = uri.getAbsolutePath().toString();
+
+        return categoryDao.getMasterCategorySortById("desc",acceptHeader,url);
+
     }
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/find/{query}")
-    public List<Category> findCategories(@PathParam("query") @DefaultValue("all") String query,
-                                        @QueryParam("q") @DefaultValue("") String name){
+    @Path("/page/{page}")
+    public MasterCategory findCategoriesByPage(@PathParam("page") @DefaultValue("1") int page,
+                                               @HeaderParam("Accept") String acceptHeader,
+                                               @Context UriInfo uri){
 
-        if(query.toLowerCase().equals("all")){
-            return category.findCategoriesSortById("desc");
-        }else if(query.toLowerCase().equals("name")){
-            return category.findCategoriesByName(name);
-        }
-        return category.findCategoriesSortById("desc");
+        String url = uri.getAbsolutePath().toString();
 
+        return categoryDao.getMasterCategorySortById("desc",acceptHeader,url,page);
     }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/sort-by/{field}/{sort}")
-    public List<Category> findCategoriesSortById(@PathParam("field") @DefaultValue("id") String field,
-                                                 @PathParam("sort") @DefaultValue("ASC") String sort) {
+    public MasterCategory findCategoriesSortById(@PathParam("field") @DefaultValue("id") String field,
+                                                 @HeaderParam("Accept") String acceptHeader,
+                                                 @PathParam("sort") @DefaultValue("ASC") String sort,
+                                                 @Context UriInfo uri) {
+        
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
 
         if(field.toLowerCase().equals("id")){
-            return category.findCategoriesSortById(sort);
+            masterCategory = categoryDao.getMasterCategorySortById(sort, acceptHeader, path);
         }else if(field.toLowerCase().equals("name")){
-            return category.findCategoriesSortByName(sort);
+            masterCategory = categoryDao.getMasterCategorySortByName(sort, acceptHeader, path);
+        }else{
+            masterCategory = categoryDao.getMasterCategorySortByName(sort, acceptHeader, path);
         }
-        return category.findCategoriesSortByName(sort);
+
+        return masterCategory;
+
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/sort-by/{field}/{sort}/page/{page}")
+    public MasterCategory findCategoriesSortByIdAndPage(@PathParam("field") @DefaultValue("id") String field,
+                                                        @HeaderParam("Accept") String acceptHeader,
+                                                        @PathParam("sort") @DefaultValue("ASC") String sort,
+                                                        @PathParam("page") @DefaultValue("1") int page,
+                                                        @Context UriInfo uri) {
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        if(field.toLowerCase().equals("id")){
+            masterCategory = categoryDao.getMasterCategorySortById(sort, acceptHeader, path, page);
+        }else if(field.toLowerCase().equals("name")){
+            masterCategory = categoryDao.getMasterCategorySortByName(sort, acceptHeader, path, page);
+        }else{
+            masterCategory = categoryDao.getMasterCategorySortByName(sort, acceptHeader, path, page);
+        }
+        
+        return masterCategory;
         
     }
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/id/{category_id}")
-    public Response findCategoryById(@PathParam("category_id") @DefaultValue("0") int categoryId){
+    public MasterCategory findCategoryById(@PathParam("category_id") @DefaultValue("0") int categoryId,
+                                    @HeaderParam("Accept") String acceptHeader,
+                                    @Context UriInfo uri){
         
-        try{
-            return Response.ok(category.findCategoryById(categoryId)).build();
-        }catch(NoResultException ex){
-            return Response.status(Response.Status.NOT_FOUND)                        
-                    .entity("Sin resultados")
-                    .type(MediaType.TEXT_PLAIN)
-                    .build();
-        }
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return categoryDao.getMasterCategoryById(categoryId, acceptHeader, path);
+
     }
+
 }

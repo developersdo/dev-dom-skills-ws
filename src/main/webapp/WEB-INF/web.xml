@@ -30,5 +30,18 @@
     <servlet-name>jersey-services</servlet-name>
     <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
+  
+    <error-page>
+        <error-code>404</error-code>
+        <location>/api/error/404</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.IllegalArgumentException</exception-type>
+        <location>/api/error/500/IllegalArgument</location>
+    </error-page>
+    <error-page>
+        <exception-type>oracle.toplink.essentials.exceptions.PersistenceUnitLoadingException</exception-type>
+        <location>/api/error/500/PersistenceUnitLoading</location>
+    </error-page>
 
 </web-app>
