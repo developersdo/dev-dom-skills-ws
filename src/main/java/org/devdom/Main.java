@@ -4,7 +4,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
-
 /**
  *
  * This class launches the web application in an embedded Jetty container.
@@ -16,8 +15,15 @@ public class Main {
 
     /**
      * @param args
+     * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception{
+
+        Runnable worker = new Worker();
+        Thread thread = new Thread(worker);
+        thread.setName("w");
+        thread.start();
+
         String webappDirLocation = "src/main/webapp/";
         
         ErrorHandler errorHandler = new ErrorHandler();
