@@ -7,10 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.eclipse.persistence.annotations.Direction;
-import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
-import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
-import org.eclipse.persistence.annotations.StoredProcedureParameter;
 
 /**
  *

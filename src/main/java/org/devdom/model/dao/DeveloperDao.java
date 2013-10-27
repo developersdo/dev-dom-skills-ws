@@ -33,13 +33,13 @@ public class DeveloperDao {
         return (path.lastIndexOf("/")==(path.length()-1))?path.substring(0, path.lastIndexOf("/")):path;
     }
     
-    public MasterDeveloper getMasterDeveloperBySkillId(String skillID,String acceptHeader, String url){
+    public MasterDeveloper findMasterDeveloperBySkillId(String skillID,String acceptHeader, String url){
 
-        return getMasterDeveloperBySkillId(skillID,acceptHeader,url,1);
+        return findMasterDeveloperBySkillId(skillID,acceptHeader,url,1);
         
     }
 
-    private MasterDeveloper getMasterDeveloperBySkillId(String skillID, String acceptHeader, String url, int page) {
+    public MasterDeveloper findMasterDeveloperBySkillId(String skillID, String acceptHeader, String url, int page) {
         
         String path = getRealPath(url);
         currentPage = page;

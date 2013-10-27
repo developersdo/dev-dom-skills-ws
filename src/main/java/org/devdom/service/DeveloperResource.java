@@ -51,4 +51,32 @@ public class DeveloperResource {
         return developerDao.findAllDevelopers(acceptHeader, path, page);
         
     }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("by/skill/id/{id}")
+    public MasterDeveloper developersBySkillID(@PathParam("skill_id") int id,
+                                                 @HeaderParam("Accept") String acceptHeader,
+                                                 @Context UriInfo uri
+                                            ){
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return developerDao.findMasterDeveloperBySkillId(path, acceptHeader, path);
+
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("by/skill/id/{id}/page/{page}")
+    public MasterDeveloper developersBySkillIDAndPage(@PathParam("skill_id") String skillID,
+                                                  @PathParam("page") @DefaultValue("1") int page,
+                                                 @HeaderParam("Accept") String acceptHeader,
+                                                 @Context UriInfo uri
+                                            ){
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return developerDao.findMasterDeveloperBySkillId(skillID, acceptHeader, path,page);
+    }
 }
