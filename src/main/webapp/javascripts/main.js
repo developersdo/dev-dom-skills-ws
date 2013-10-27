@@ -11,7 +11,7 @@ devdom = (function( $, undefined ){
         skills.params = '';
         skills.result = '';
         skills.stringFormatted = '';
-        skills.displaySource = 'panel';
+        skills.displaySource = 'source-code';
         skills.category = {
             findAll : function(callback){
                 skills.resource='/category';
@@ -24,7 +24,6 @@ devdom = (function( $, undefined ){
             show : function(){
                 this.load(function(json){
                     var len = json["category"].length;
-                    alert(len);
                 });
             }
         };
@@ -37,28 +36,74 @@ devdom = (function( $, undefined ){
                 dataType: this.media,
                 data: this.params,
                 success: function(response, textStatus, jqXHR){
-                    skills.render(response);
+                    skills.setResult(response);
+                    skills.syntax.highlight();
                 },
                 error : function(response, textStatus, jqXHR){
                     skills.render('error');
                 }
             });
         },
-        skills.render = function(result){
+        skills.setResult = function(result){
             skills.result = result;
-            alert('type '+ skills.type);
-            alert('result '+result);
         },
+        skills.getResult = function(){
+            return skills.result;
+        }
+        ,
         skills.syntax = {
-            highlight : function(code){
-                if(skills.media.indexOf('json')){
-                    skills.syntax.transformJSON()
+            nodeId : 0,
+            header : '',
+            createLinkage : function(prev,current){
+                
+                skills.syntax.defineHeader(current);
+                
+                function createLink(prev,current){
+                    if(prev==='"id":'){
+                        skills.syntax.nodeId = current;
+                        return('<a href="'+(skills.service + 
+                               '/category/id/'+skills.syntax.nodeId)+
+                               '">'+skills.syntax.nodeId+'</a>');
+                    }else if(prev==='"skills":'){
+                        return('<a href="'+(skills.service + 
+                               '/skill/by/category/id/'+skills.syntax.nodeId)+
+                               '">'+current+'</a>'); 
+                    }
+                    return current;
+                }
+                
+                if(((skills.resource.replace(/\//,'')).indexOf('category')===0)){
+                    if(skills.syntax.header==='pagination'){
+                        if(prev==='"url":')
+                            return ('<a href="'+current.replace(/"/g,'')+'">'+current+'</a>');
+                        if(prev==='"absolutePath":')
+                            return ('<a href="'+current.replace(/"/g,'')+'">'+current+'</a>');  
+                    }else{
+                        return createLink(prev,current);
+                    }
+                }
+                return current;
+            },
+            defineHeader : function(value){
+                switch(value){
+                    case '"category":': skills.syntax.header='category';break;
+                    case '"pagination":': skills.syntax.header='pagination';break;
+                    case '"skills":': skills.syntax.header='skills';break;
+                }
+            },
+            highlight : function(){
+                if(skills.media.indexOf('json')!==-1){
+                    skills.syntax.transformJSON(skills.getResult());
                 }else if(skills.media.indexOf('xml')){
                     
                 }
             },
             transformJSON: function(code){
-                return (code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')).replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                code = JSON.stringify(code, undefined, 4);
+                code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                var previousTag = '';
+                var currentTag = '';
+                code = code.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
                     var cls = 'number';
                     if (/^"/.test(match)) {
                         if (/:$/.test(match)) {
@@ -71,8 +116,16 @@ devdom = (function( $, undefined ){
                     } else if (/null/.test(match)) {
                         cls = 'null';
                     }
-                    return '<span class="' + cls + '">' + match + '</span>';
+
+                    if(cls.indexOf("number")!==0){
+                        
+                    }
+                    var link = skills.syntax.createLinkage(previousTag,match);
+                    previousTag = match;
+                    return '<span class="' + cls + '">' + link + '</span>';
                 });
+                skills.setResult(code);
+                $('#'+skills.displaySource).html("<pre>\n"+code+"\n</pre>");
             },
             transformXML : function(){
                 code = code.split('&').join('&');
