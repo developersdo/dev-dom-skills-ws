@@ -12,6 +12,8 @@ devdom = (function( $, undefined ){
         skills.result = '';
         skills.stringFormatted = '';
         skills.displaySource = 'source-code';
+        skills.path = '';
+        skills.keyPath = '';
         skills.category = {
             findAll : function(callback){
                 skills.resource='/category';
@@ -23,11 +25,17 @@ devdom = (function( $, undefined ){
             },
             show : function(){
                 this.load(function(json){
-                    var len = json["category"].length;
+                    var len = json['category'].length;
                 });
             }
         };
-        skills.read = function(callback){
+        skills.curl = function(url){
+            if(url.length>0){
+                skills.resource = url.split('api')[1];
+                skills.read();
+            }
+        },
+        skills.read = function(){
             jQuery.support.cors = true;
             var result;
             $.ajax({ 
@@ -40,7 +48,8 @@ devdom = (function( $, undefined ){
                     skills.syntax.highlight();
                 },
                 error : function(response, textStatus, jqXHR){
-                    skills.render('error');
+                    skills.setResult('error');
+                    alert('error:'+response)
                 }
             });
         },
@@ -57,52 +66,85 @@ devdom = (function( $, undefined ){
             createLinkage : function(prev,current){
                 
                 skills.syntax.defineHeader(current);
+
+                var arrays = skills.resource.split('/',5);
+                skills.path = arrays[1];
+                skills.keyPath = arrays[3];
+                var segment = '';
                 
-                function createLink(prev,current){
+                function createLinks(prev,current,path,segment){
                     if(prev==='"id":'){
                         skills.syntax.nodeId = current;
-                        return('<a href="'+(skills.service + 
-                               '/category/id/'+skills.syntax.nodeId)+
-                               '">'+skills.syntax.nodeId+'</a>');
-                    }else if(prev==='"skills":'){
-                        return('<a href="'+(skills.service + 
+                        return('<a href="javascript:devdom.curl(\''+(skills.service + 
+                               '/'+path+'/id/'+skills.syntax.nodeId)+
+                               '\');">'+skills.syntax.nodeId+'</a>');
+                    }
+                    if(prev==='"skills":' && skills.path==='category'){
+                        return('<a href="javascript:devdom.curl(\''+(skills.service + 
                                '/skill/by/category/id/'+skills.syntax.nodeId)+
-                               '">'+current+'</a>'); 
+                               '\');">'+current+'</a>'); 
+                    }
+                    if(prev==='"votes":' && skills.path==='skill'){
+                        return('<a href="javascript:devdom.curl(\''+(skills.service + 
+                               '/developer/by/skill/id/'+skills.syntax.nodeId)+
+                               '\');">'+current+'</a>'); 
+                    }
+                    if(prev==='"votes":' && skills.path==='developer'){
+                        return('<a href="javascript:devdom.curl(\''+(skills.service + 
+                               '/developer/by/skill/id/'+skills.syntax.nodeId)+
+                               '\');">'+current+'</a>'); 
+                    }
+                    if(prev==='"skills":' && skills.path==='developers'){
+                        return('<a href="javascript:devdom.curl(\''+(skills.service + 
+                               '/skill/by/category/id/'+skills.syntax.nodeId)+
+                               '\');">'+current+'</a>'); 
                     }
                     return current;
                 }
-                
-                if(((skills.resource.replace(/\//,'')).indexOf('category')===0)){
+
+                if(((skills.resource.replace(/\//,'')).indexOf('category')===0) ||
+                   ((skills.resource.replace(/\//,'')).indexOf('skill')===0) ||
+                   ((skills.resource.replace(/\//,'')).indexOf('developer')===0)
+                  ){
                     if(skills.syntax.header==='pagination'){
-                        if(prev==='"url":')
-                            return ('<a href="'+current.replace(/"/g,'')+'">'+current+'</a>');
-                        if(prev==='"absolutePath":')
-                            return ('<a href="'+current.replace(/"/g,'')+'">'+current+'</a>');  
-                    }else{
-                        return createLink(prev,current);
+                        if(prev==='"url":'){
+                            return ('<a href="javascript:devdom.curl(\''+current.replace(/"/g,'')+'\');">'+current+'</a>');
+                        }
+                        if(prev==='"absolutePath":'){
+                            return ('<a href="javascript:devdom.curl(\''+current.replace(/"/g,'')+'\');">'+current+'</a>');  
+                        }
+                    }else if(skills.syntax.header==='category'){
+                        segment = 'skill';
+                        return createLinks(prev,current,'category','skill');
+                    }else if(skills.syntax.header==='skill'){
+                        segment = 'developer';
+                        return createLinks(prev,current,'skill','skill');
+                    }else if(skills.syntax.header==='developers'){
+                        return createLinks(prev,current,'developer','developer');
                     }
+                    return current;
                 }
                 return current;
             },
             defineHeader : function(value){
                 switch(value){
-                    case '"category":': skills.syntax.header='category';break;
+                    case '"category":'  : skills.syntax.header='category';break;
                     case '"pagination":': skills.syntax.header='pagination';break;
-                    case '"skills":': skills.syntax.header='skills';break;
+                    case '"skills":'    : skills.syntax.header='skill';break;
+                    case '"developers":': skills.syntax.header='developers';break;
                 }
             },
             highlight : function(){
                 if(skills.media.indexOf('json')!==-1){
                     skills.syntax.transformJSON(skills.getResult());
                 }else if(skills.media.indexOf('xml')){
-                    
+                    // pendiente
                 }
             },
             transformJSON: function(code){
                 code = JSON.stringify(code, undefined, 4);
                 code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 var previousTag = '';
-                var currentTag = '';
                 code = code.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
                     var cls = 'number';
                     if (/^"/.test(match)) {
@@ -116,10 +158,11 @@ devdom = (function( $, undefined ){
                     } else if (/null/.test(match)) {
                         cls = 'null';
                     }
-
+                    /*
                     if(cls.indexOf("number")!==0){
                         
                     }
+                    */
                     var link = skills.syntax.createLinkage(previousTag,match);
                     previousTag = match;
                     return '<span class="' + cls + '">' + link + '</span>';
@@ -138,5 +181,3 @@ devdom = (function( $, undefined ){
         };
         return skills;
     }( jQuery ));
-    
-    //devdom.category.
