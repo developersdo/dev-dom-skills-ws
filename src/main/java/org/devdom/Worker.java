@@ -15,7 +15,7 @@ public class Worker implements Runnable{
 
     private static final int RUNNER = 1500; // 31 ?
     private static final Logger LOGGER = Logger.getLogger(Worker.class .getName());
-    private static final int SLEEP = (60000*45);
+    private static final int SLEEP = (60000*40);
 
     @Override
     public void run() {
