@@ -26,22 +26,20 @@ public class DeveloperResource {
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public MasterDeveloper index(@PathParam("id") int id,
-                                                 @HeaderParam("Accept") String acceptHeader,
-                                                 @Context UriInfo uri
-                                            ){
+    public MasterDeveloper index(@HeaderParam("Accept") String acceptHeader,
+                                 @Context UriInfo uri){
 
         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
-        
+
         return developerDao.findAllDevelopers(acceptHeader, path);
-        
+
     }
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("page/{page}")
     public MasterDeveloper findAllDeveloperByPage(@PathParam("id") int id,
-                                                 @PathParam("page") @DefaultValue("1") int page,
+                                                 @DefaultValue("1") @PathParam("page") int page,
                                                  @HeaderParam("Accept") String acceptHeader,
                                                  @Context UriInfo uri
                                             ){
@@ -55,21 +53,21 @@ public class DeveloperResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("by/skill/id/{id}")
-    public MasterDeveloper developersBySkillID(@PathParam("skill_id") int id,
+    public MasterDeveloper developersBySkillID(@PathParam("id") int skillID,
                                                  @HeaderParam("Accept") String acceptHeader,
                                                  @Context UriInfo uri
                                             ){
 
         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
 
-        return developerDao.findMasterDeveloperBySkillId(path, acceptHeader, path);
+        return developerDao.findMasterDeveloperBySkillId(skillID, acceptHeader, path);
 
     }
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("by/skill/id/{id}/page/{page}")
-    public MasterDeveloper developersBySkillIDAndPage(@PathParam("skill_id") String skillID,
+    public MasterDeveloper developersBySkillIDAndPage(@PathParam("id") int skillID,
                                                   @PathParam("page") @DefaultValue("1") int page,
                                                  @HeaderParam("Accept") String acceptHeader,
                                                  @Context UriInfo uri
@@ -79,4 +77,34 @@ public class DeveloperResource {
 
         return developerDao.findMasterDeveloperBySkillId(skillID, acceptHeader, path,page);
     }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("id/{id}")
+    public MasterDeveloper developersByID(@PathParam("id") int id,
+                                                 @HeaderParam("Accept") String acceptHeader,
+                                                 @Context UriInfo uri
+                                            ){
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return developerDao.getDeveloperById(id, acceptHeader, path);
+
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("id/{id}/page/{page}")
+    public MasterDeveloper developersByIDAndPage(@PathParam("id") int id,
+                                                 @HeaderParam("Accept") String acceptHeader,
+                                                 @DefaultValue("1") @PathParam("page") int page,
+                                                 @Context UriInfo uri
+                                            ){
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return developerDao.getDeveloperById(id, acceptHeader, path,page);
+
+    }
+
 }

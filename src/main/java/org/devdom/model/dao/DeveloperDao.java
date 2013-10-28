@@ -12,14 +12,14 @@ import org.devdom.util.IPagination;
 
 /**
  *
- * @author Carlos Vasquez
+ * @author Carlos Vásquez Polanco
  */
 public class DeveloperDao {
     
     private final int ROWS_PER_PAGE = IPagination.ROWS_PER_PAGE;
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-    MasterDeveloper masterDeveloper = new MasterDeveloper();
-    SkillsDao skillDao = new SkillsDao();
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+    private final MasterDeveloper masterDeveloper = new MasterDeveloper();
+    private final SkillsDao skillDao = new SkillsDao();
     private int currentPage = 1;
     private int from = 0;
     private int to = 0;
@@ -33,13 +33,13 @@ public class DeveloperDao {
         return (path.lastIndexOf("/")==(path.length()-1))?path.substring(0, path.lastIndexOf("/")):path;
     }
     
-    public MasterDeveloper findMasterDeveloperBySkillId(String skillID,String acceptHeader, String url){
+    public MasterDeveloper findMasterDeveloperBySkillId(int skillID,String acceptHeader, String url){
 
         return findMasterDeveloperBySkillId(skillID,acceptHeader,url,1);
         
     }
 
-    public MasterDeveloper findMasterDeveloperBySkillId(String skillID, String acceptHeader, String url, int page) {
+    public MasterDeveloper findMasterDeveloperBySkillId(int skillID, String acceptHeader, String url, int page) {
         
         String path = getRealPath(url);
         currentPage = page;
@@ -49,12 +49,12 @@ public class DeveloperDao {
         
         
         List<Developer> developers = findDevelopersBySkillId(skillID);
-        List<Skills> skills = skillDao.findSkillsById(Integer.parseInt(skillID));
-        rowCount = skills.size();
+        List<Skills> skills = skillDao.findSkillsById(skillID);
+        rowCount = developers.size();
 
         to = (to>rowCount)?rowCount:to;
 
-        skills = skills.subList(from, to);
+        developers = developers.subList(from, to);
 
         Pagination pagination = new Pagination();
         pagination.setPositionCurrentPage(currentPage);
@@ -103,7 +103,7 @@ public class DeveloperDao {
         return masterDeveloper;
     }
     
-    private List<Developer> findDevelopersBySkillId(String skillID){
+    private List<Developer> findDevelopersBySkillId(int skillID){
         EntityManager em=emf.createEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findDevelopersBySkillId")
@@ -116,7 +116,42 @@ public class DeveloperDao {
         }
     }
     
-    public List<Developer> findDeveloperById(String id){
+    public MasterDeveloper getDeveloperById(int id,String acceptHeader, String url){
+        return getDeveloperById(id, acceptHeader, url, 1);
+    }
+    
+    public MasterDeveloper getDeveloperById(int id,String acceptHeader, String url, int page){
+        
+        String path = getRealPath(url);
+        currentPage = page;
+        
+        from = (currentPage-1)*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
+        
+        
+        List<Developer> developers = getDeveloperById(id);
+        List<Skills> skills = skillDao.findSkillsByDeveloperId(id);
+        rowCount = skills.size();
+
+        to = (to>rowCount)?rowCount:to;
+
+        skills = skills.subList(from, to);
+
+        Pagination pagination = new Pagination();
+        pagination.setPositionCurrentPage(currentPage);
+        pagination.setRowsPerPages(ROWS_PER_PAGE);
+        pagination.setTotalRow(rowCount);
+        pagination.setDataType(acceptHeader);
+        pagination.setAbsolutePath(path);
+        pagination.generate();
+        masterDeveloper.setDevelopers(developers);
+        masterDeveloper.setSkills(skills);
+        masterDeveloper.setPagination(pagination);
+
+        return masterDeveloper;
+    }
+    
+    public List<Developer> getDeveloperById(int id){
         EntityManager em=emf.createEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findDeveloperById")
@@ -129,7 +164,7 @@ public class DeveloperDao {
         }
     }
     
-    private List<Developer> findAllDevelopers(){
+    public List<Developer> findAllDevelopers(){
         EntityManager em=emf.createEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findAllDevelopers")
