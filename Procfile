@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency/* org.devdom.Main
+web: java -cp target/classes:target/dependency/* org.devdom.skills.Main
