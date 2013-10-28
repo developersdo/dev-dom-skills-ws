@@ -1,5 +1,6 @@
 package org.devdom.service;
 
+import java.util.List;
 import org.devdom.model.dao.CategoryDao;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -10,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import org.devdom.model.dto.Category;
 import org.devdom.model.dto.MasterCategory;
 
 /** 
@@ -93,13 +95,13 @@ public class CategoryResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/id/{category_id}")
-    public MasterCategory findCategoryById(@PathParam("category_id") @DefaultValue("0") int categoryId,
+    public List<Category> findCategoryById(@PathParam("category_id") @DefaultValue("0") int categoryId,
                                     @HeaderParam("Accept") String acceptHeader,
                                     @Context UriInfo uri){
         
         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
 
-        return categoryDao.getMasterCategoryById(categoryId, acceptHeader, path);
+        return categoryDao.findCategoryById(categoryId);
 
     }
 

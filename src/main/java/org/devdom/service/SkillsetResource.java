@@ -56,7 +56,7 @@ public class SkillsetResource {
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("by/id/{id}")
+    @Path("id/{id}")
     public List<Skills> findSkillsById(@PathParam("id") int id,
                                        @HeaderParam("Accept") String acceptHeader,
                                        @Context UriInfo uri){
@@ -69,7 +69,7 @@ public class SkillsetResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("by/developer/id/{id}")
-    public MasterSkillset findSkillsByDeveloperId(@PathParam("id") String id,
+    public MasterSkillset findSkillsByDeveloperId(@PathParam("id") int id,
                                        @HeaderParam("Accept") String acceptHeader,
                                        @Context UriInfo uri){
         
@@ -82,7 +82,7 @@ public class SkillsetResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("by/developer/id/{id}/page/{page}")
-    public MasterSkillset findSkillsByDeveloperIdAndPage(@PathParam("id") String id,
+    public MasterSkillset findSkillsByDeveloperIdAndPage(@PathParam("id") int id,
                                        @PathParam("page") @DefaultValue("1") int page,
                                        @HeaderParam("Accept") String acceptHeader,
                                        @Context UriInfo uri){
