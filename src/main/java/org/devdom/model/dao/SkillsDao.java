@@ -29,12 +29,12 @@ public class SkillsDao{
         return emf.createEntityManager();
     }
     
-    public MasterSkillset getSkillsByDeveloperId(String id, String acceptHeader, String path) {
+    public MasterSkillset getSkillsByDeveloperId(int id, String acceptHeader, String path) {
         
         return getSkillsByDeveloperId(id,acceptHeader,path,1);
     }
     
-    public MasterSkillset getSkillsByDeveloperId(String developerId, String acceptHeader, String path, int page) {
+    public MasterSkillset getSkillsByDeveloperId(int developerId, String acceptHeader, String path, int page) {
         
         DeveloperDao developerDao = new DeveloperDao();
         currentPage = page;
@@ -58,7 +58,7 @@ public class SkillsDao{
         pagination.generate();
 
         skillset.setPagination(pagination);
-        skillset.setDevelopers(developerDao.findDeveloperById(developerId));
+        skillset.setDevelopers(developerDao.getDeveloperById(developerId));
         skillset.setSkills(skills);
 
         return skillset;
@@ -116,7 +116,7 @@ public class SkillsDao{
         return skills;
     }
     
-    private List<Skills> findSkillsByDeveloperId(String developerId){
+    public List<Skills> findSkillsByDeveloperId(int developerId){
         
         EntityManager em = emf.createEntityManager();
         List<Skills> skills = null; 
