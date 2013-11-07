@@ -9,5 +9,5 @@ java usando jersey.
 ## Documentación
 Puedes leer [DevDom.Skills RESTful api en Heroku][docs]
 
-[docs]: http://skills-devdom.herokuapp.com/explorer.html 
+[docs]: http://skills-devdom.herokuapp.com/ 
 
