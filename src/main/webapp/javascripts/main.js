@@ -4,7 +4,7 @@ devdom = (function( $, undefined ){
         
     var skills = {};
         skills.JSON = new Array();
-        skills.service  = 'http://localhost:8080/api';
+        skills.service  = 'http://skills-devdom.herokuapp.com/api';
         skills.resource = '';
         skills.type = 'GET';
         skills.media = 'json';
@@ -12,8 +12,34 @@ devdom = (function( $, undefined ){
         skills.result = '';
         skills.stringFormatted = '';
         skills.displaySource = 'source-code';
+        skills.displaySourceAnk = '#ank';
         skills.path = '';
         skills.keyPath = '';
+        skills.picture = {
+            xOffset : 10,
+            yOffset : 30,
+            renderLink : function(){
+                $("a.profile-picture").hover(function(e){
+                    this.t = this.title;
+                    this.title = "";	
+                    var c = (this.t != "") ? "<br/>" + this.t : "";
+                    $("body").append("<p id='profile-picture'><img src='"+ this.href +"'/>"+ c +"</p>");								 
+                    $("#profile-picture") 
+                            .css("top",(e.pageY - skills.picture.xOffset) + "px")
+                            .css("left",(e.pageX + skills.picture.yOffset) + "px")
+                            .fadeIn("fast");						
+                },
+                function(){
+                    this.title = this.t;	
+                    $("#profile-picture").remove();
+                });	
+                $("a.profile-picture").mousemove(function(e){
+                    $("#profile-picture")
+                        .css("top",(e.pageY - skills.picture.xOffset) + "px")
+                        .css("left",(e.pageX + skills.picture.yOffset) + "px");
+                });
+            }
+        };
         skills.category = {
             findAll : function(callback){
                 skills.resource='/category';
@@ -29,12 +55,20 @@ devdom = (function( $, undefined ){
                 });
             }
         };
-        skills.curl = function(url){
+        skills.icurl = function(url){
             if(url.length>0){
                 skills.resource = url.split('api')[1];
                 skills.read();
             }
-        },
+        },skills.curl = function(url,target){
+            if(url.length>0){
+                skills.displaySourceAnk = target+"-ank";
+                skills.displaySource = target;
+                skills.resource = url.split('api')[1];
+                skills.read();
+            }
+        }
+        ,
         skills.read = function(){
             jQuery.support.cors = true;
             var result;
@@ -47,7 +81,7 @@ devdom = (function( $, undefined ){
                     skills.setResult(response);
                     skills.syntax.highlight();
                     jQuery('html,body').animate({
-                                                scrollTop: $("#ank").offset().top - 165
+                                                scrollTop: $('#'+skills.displaySourceAnk).offset().top - 165
                                                 },
                                                 'slow');
                 },
@@ -81,27 +115,30 @@ devdom = (function( $, undefined ){
                         skills.syntax.nodeId = current;
                         return('<a href="javascript:devdom.curl(\''+(skills.service + 
                                '/'+path+'/id/'+skills.syntax.nodeId)+
-                               '\');">'+skills.syntax.nodeId+'</a>');
+                               '\',\''+skills.displaySource+'\');">'+skills.syntax.nodeId+'</a>');
                     }
                     if(prev==='"skills":' && skills.path==='category'){
                         return('<a href="javascript:devdom.curl(\''+(skills.service + 
                                '/skill/by/category/id/'+skills.syntax.nodeId)+
-                               '\');">'+current+'</a>'); 
+                               '\',\''+skills.displaySource+'\');">'+current+'</a>'); 
                     }
                     if(prev==='"votes":' && skills.path==='skill'){
                         return('<a href="javascript:devdom.curl(\''+(skills.service + 
                                '/developer/by/skill/id/'+skills.syntax.nodeId)+
-                               '\');">'+current+'</a>'); 
+                               '\',\''+skills.displaySource+'\');">'+current+'</a>'); 
                     }
                     if(prev==='"votes":' && skills.path==='developer'){
                         return('<a href="javascript:devdom.curl(\''+(skills.service + 
                                '/developer/by/skill/id/'+skills.syntax.nodeId)+
-                               '\');">'+current+'</a>'); 
+                               '\',\''+skills.displaySource+'\');">'+current+'</a>'); 
                     }
-                    if(prev==='"skills":' && skills.path==='developers'){
+                    if(prev==='"skills":' && skills.path==='developer'){
                         return('<a href="javascript:devdom.curl(\''+(skills.service + 
                                '/skill/by/category/id/'+skills.syntax.nodeId)+
-                               '\');">'+current+'</a>'); 
+                               '\',\''+skills.displaySource+'\');">'+current+'</a>'); 
+                    }
+                    if(prev==='"picture":' && skills.path==='developer'){
+                        return('<a target="_blank" href="'+current.replace(/"/g,'')+'" class="profile-picture">'+current+'</a>'); 
                     }
                     return current;
                 }
@@ -112,10 +149,10 @@ devdom = (function( $, undefined ){
                   ){
                         if(skills.syntax.header==='pagination'){
                             if(prev==='"url":'){
-                                return ('<a href="javascript:devdom.curl(\''+current.replace(/"/g,'')+'\');">'+current+'</a>');
+                                return ('<a href="javascript:devdom.curl(\''+current.replace(/"/g,'')+'\',\''+skills.displaySource+'\');">'+current+'</a>');
                             }
                             if(prev==='"absolutePath":'){
-                                return ('<a href="javascript:devdom.curl(\''+current.replace(/"/g,'')+'\');">'+current+'</a>');  
+                                return ('<a href="javascript:devdom.curl(\''+current.replace(/"/g,'')+'\',\''+skills.displaySource+'\');">'+current+'</a>');  
                             }
                         }else if(skills.syntax.header==='category'){
                             return createLinks(prev,current,'category','skill');
@@ -167,6 +204,7 @@ devdom = (function( $, undefined ){
                 });
                 skills.setResult(code);
                 $('#'+skills.displaySource).html("<pre>\n"+code+"\n</pre>");
+                skills.picture.renderLink();
             },
             transformXML : function(){
                 code = code.split('&').join('&');
@@ -179,3 +217,5 @@ devdom = (function( $, undefined ){
         };
         return skills;
     }( jQuery ));
+    
+jQuery.support.cors = true;
