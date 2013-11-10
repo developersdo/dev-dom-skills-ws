@@ -17,7 +17,6 @@ public class MediaTypeFilter extends UriConnegFilter{
     static{
         mappedMediaTypes.put("xml", MediaType.APPLICATION_XML_TYPE );
         mappedMediaTypes.put("json", MediaType.APPLICATION_JSON_TYPE);
-        mappedMediaTypes.put("html", MediaType.TEXT_HTML_TYPE);
     }
     
     public MediaTypeFilter(){
