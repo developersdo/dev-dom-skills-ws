@@ -4,7 +4,7 @@ devdom = (function( $, undefined ){
         
     var skills = {};
         skills.JSON = new Array();
-        skills.service  = 'http://localhost:8084/api'; //http://skills-devdom.herokuapp.com/api
+        skills.service  = 'http://skills-devdom.herokuapp.com/api';
         skills.resource = '';
         skills.type = 'GET';
         skills.media = 'json';
@@ -86,7 +86,7 @@ devdom = (function( $, undefined ){
                     skills.setResult(response);
                     skills.syntax.highlight();
                     jQuery('html,body').animate({
-                                                scrollTop: $('#'+skills.displaySourceAnk).offset().top - 165
+                                                scrollTop: $('#'+skills.displaySourceAnk).offset().top - 20
                                                 },
                                                 'slow');
                 },
