@@ -15,6 +15,11 @@ devdom = (function( $, undefined ){
         skills.displaySourceAnk = '#ank';
         skills.path = '';
         skills.keyPath = '';
+        skills.request = {
+            status : 0,
+            start : new Date(),
+            end : new Date()
+        };
         skills.picture = {
             xOffset : 10,
             yOffset : 30,
@@ -81,7 +86,7 @@ devdom = (function( $, undefined ){
                     skills.setResult(response);
                     skills.syntax.highlight();
                     jQuery('html,body').animate({
-                                                scrollTop: $('#'+skills.displaySourceAnk).offset().top - 165
+                                                scrollTop: $('#'+skills.displaySourceAnk).offset().top - 20
                                                 },
                                                 'slow');
                 },

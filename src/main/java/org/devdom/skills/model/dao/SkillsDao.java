@@ -29,6 +29,37 @@ public class SkillsDao{
         return emf.createEntityManager();
     }
     
+    public MasterSkillset getAllSkills(String acceptHeader, String path){
+        
+        return getAllSkills(acceptHeader, path, 1);
+    }
+    
+    public MasterSkillset getAllSkills(String acceptHeader, String path, int page) {
+        currentPage = page;
+        from = (currentPage-1)*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
+        
+        List<Skills> skills = this.findAllSkills();
+        rowCount = skills.size();
+        
+        to = (to>rowCount)?rowCount:to;
+        
+        skills = skills.subList(from,to); 
+        
+        Pagination pagination = new Pagination();
+        pagination.setPositionCurrentPage(currentPage);
+        pagination.setRowsPerPages(ROWS_PER_PAGE);
+        pagination.setTotalRow(rowCount);
+        pagination.setDataType(acceptHeader);
+        pagination.setAbsolutePath(path);
+        pagination.generate();
+        
+        skillset.setPagination(pagination);
+        skillset.setSkills(skills);
+        
+        return skillset;
+    }
+    
     public MasterSkillset getSkillsByDeveloperId(int id, String acceptHeader, String path) {
         
         return getSkillsByDeveloperId(id,acceptHeader,path,1);
@@ -142,6 +173,23 @@ public class SkillsDao{
         try{
             skills = em.createNamedQuery("Skills.findSkillsById")
                  .setParameter("skill_id",id)
+                 .getResultList();
+         }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        return skills;
+
+    }
+    
+    public List<Skills> findAllSkills(){
+
+        EntityManager em = emf.createEntityManager();
+        
+        List<Skills> skills = null; 
+        
+        try{
+            skills = em.createNamedQuery("Skills.findAllSkills")
                  .getResultList();
          }catch(Exception ex){
             ex.printStackTrace();
