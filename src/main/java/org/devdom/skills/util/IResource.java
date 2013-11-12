@@ -22,7 +22,9 @@ public final class IResource {
                                     "api/developer",
                                     "api/developer/page/:page-number",
                                     "api/developer/id/:developer-id",
-                                    "api/developer/id/:developer-id/page/:page-number"
+                                    "api/developer/id/:developer-id/page/:page-number",
+                                    "api/skill",
+                                    "api/skill/page/:page-number"
                                 };
 
     public static final String[] DESCRIPTION = {
@@ -35,7 +37,9 @@ public final class IResource {
         "Retornar el listado de developers",
         "Retornar el listado de developers, indicando la página que se desea mostrar",
         "Retorna información de un developer según su id",
-        "Retorna información de un developer según su id y se especifica que página se desea mostrar."
+        "Retorna información de un developer según su id y se especifica que página se desea mostrar",
+        "Lista todos los skills",
+        "Lista todos los skills, indicando que página se desea mostrar"
     };
 
     public static final String getTag(String uri){
@@ -50,7 +54,7 @@ public final class IResource {
     }
 
     public static final String finalURL(String url){
-        return url.replaceAll(":page-number","1")
+        return url.replaceAll(":page-number","1") 
                   .replaceAll(":category-id","5") //category-id = (5) programming language
                   .replaceAll(":skill-id","8901") //skill-id = (8901) JBoss 
                   .replaceAll(":developer-id","1401"); //developer-id = 1401

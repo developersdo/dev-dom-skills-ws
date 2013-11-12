@@ -28,6 +28,32 @@ public class SkillsetResource {
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public MasterSkillset findAllSkills(@HeaderParam("Accept") String acceptHeader,
+                                        @Context UriInfo uri
+                                        ){
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return skillsDao.getAllSkills(acceptHeader, path);
+
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("page/{page}")
+    public MasterSkillset findAllSkills(@HeaderParam("Accept") String acceptHeader,
+                                        @PathParam("page") int page,
+                                        @Context UriInfo uri
+                                        ){
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return skillsDao.getAllSkills(acceptHeader, path, page);
+
+   }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("by/category/id/{id}")
     public MasterSkillset findSkillsByCategoryId(@PathParam("id") int id,
                                                  @HeaderParam("Accept") String acceptHeader,
