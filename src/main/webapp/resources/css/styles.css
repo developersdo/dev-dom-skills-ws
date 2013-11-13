@@ -303,3 +303,22 @@ footer {
 .api-detail{
     padding-left: 26px;
 }
+
+
+img .bt-link img .bt-verb{
+    padding-left: 2px;
+    position: relative;
+    top: 4px;
+}
+
+.key{
+    color:#B58900;
+}
+
+.null, .number{
+    color:blue;
+}
+
+.string{
+    color:#2AA198;    
+}
