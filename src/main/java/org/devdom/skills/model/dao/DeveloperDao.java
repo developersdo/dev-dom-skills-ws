@@ -102,18 +102,38 @@ public class DeveloperDao {
 
         return masterDeveloper;
     }
+            
+    public MasterDeveloper getAllDevelopersByFilters(String firstName, String lastName, String sort, int limit, String acceptHeader, String url){
+        return getAllDevelopersByFilters(firstName, lastName, sort, limit, acceptHeader, url, 1);
+    }
     
-    private List<Developer> findDevelopersBySkillId(int skillID){
-        EntityManager em=emf.createEntityManager();
-        try{
-            return (List<Developer>) em.createNamedQuery("Developer.findDevelopersBySkillId")
-                    .setParameter("skill_id", skillID)
-                    .getResultList();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+    public MasterDeveloper getAllDevelopersByFilters(String firstName, String lastName, String sort, int limit, String acceptHeader, String url, int page) {
+        
+        String path = getRealPath(url);
+        currentPage = page;
+        
+        from = (currentPage-1)*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
+        
+        
+        List<Developer> developers = this.findAllDevelopersByFilters(firstName, lastName, sort, limit);
+        rowCount = developers.size();
+
+        to = (to>rowCount)?rowCount:to;
+
+        developers = developers.subList(from, to);
+
+        Pagination pagination = new Pagination();
+        pagination.setPositionCurrentPage(currentPage);
+        pagination.setRowsPerPages(ROWS_PER_PAGE);
+        pagination.setTotalRow(rowCount);
+        pagination.setDataType(acceptHeader);
+        pagination.setAbsolutePath(path);
+        pagination.generate();
+        masterDeveloper.setDevelopers(developers);
+        masterDeveloper.setPagination(pagination);
+
+        return masterDeveloper;
     }
     
     public MasterDeveloper getDeveloperById(int id,String acceptHeader, String url){
@@ -129,7 +149,7 @@ public class DeveloperDao {
         to = (from+ROWS_PER_PAGE);
         
         
-        List<Developer> developers = getDeveloperById(id);
+        List<Developer> developers = findDeveloperById(id);
         List<Skills> skills = skillDao.findSkillsByDeveloperId(id);
         rowCount = skills.size();
 
@@ -151,7 +171,20 @@ public class DeveloperDao {
         return masterDeveloper;
     }
     
-    public List<Developer> getDeveloperById(int id){
+    private List<Developer> findDevelopersBySkillId(int skillID){
+        EntityManager em=emf.createEntityManager();
+        try{
+            return (List<Developer>) em.createNamedQuery("Developer.findDevelopersBySkillId")
+                    .setParameter("skill_id", skillID)
+                    .getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    public List<Developer> findDeveloperById(int id){
         EntityManager em=emf.createEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findDeveloperById")
@@ -176,5 +209,20 @@ public class DeveloperDao {
         }
     }
     
+    public List<Developer> findAllDevelopersByFilters(String firstName, String lastName, String sort, int limit){
+        EntityManager em=emf.createEntityManager();
+        try{
+            return (List<Developer>) em.createNamedQuery("Developer.findAllDevelopersByFilters")
+                    .setParameter("first_name",firstName)
+                    .setParameter("last_name",lastName)
+                    .setParameter("sort",sort)
+                    .setParameter("limit",limit)
+                    .getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
     
 }

@@ -89,7 +89,7 @@ public class SkillsDao{
         pagination.generate();
 
         skillset.setPagination(pagination);
-        skillset.setDevelopers(developerDao.getDeveloperById(developerId));
+        skillset.setDevelopers(developerDao.findDeveloperById(developerId));
         skillset.setSkills(skills);
 
         return skillset;

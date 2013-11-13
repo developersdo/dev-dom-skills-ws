@@ -6,6 +6,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -105,6 +106,39 @@ public class DeveloperResource {
 
         return developerDao.getDeveloperById(id, acceptHeader, path,page);
 
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("where")
+    public MasterDeveloper allDevelopersByFilters(@HeaderParam("Accept") String acceptHeader,
+                                                  @Context UriInfo uri,
+                                                  @QueryParam("first_name") String firstName,
+                                                  @QueryParam("last_name") String lastName,
+                                                  @QueryParam("sort") String sort,
+                                                  @QueryParam("limit") int limit
+                                                 ){
+         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return developerDao.getAllDevelopersByFilters(firstName, lastName, sort, limit, acceptHeader, path);
+        
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("where/page/{page}")
+    public MasterDeveloper allDevelopersByFilters(@HeaderParam("Accept") String acceptHeader,
+                                                  @DefaultValue("1") @PathParam("page") int page,
+                                                  @Context UriInfo uri,
+                                                  @QueryParam("first_name") String firstName,
+                                                  @QueryParam("last_name") String lastName,
+                                                  @QueryParam("sort") String sort,
+                                                  @QueryParam("limit") int limit
+                                                 ){
+         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return developerDao.getAllDevelopersByFilters(firstName, lastName, sort, limit, acceptHeader, path, page);
+        
     }
 
 }
