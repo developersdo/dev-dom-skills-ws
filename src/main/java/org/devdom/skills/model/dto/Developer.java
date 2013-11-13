@@ -42,6 +42,27 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 procedureName="findAllDevelopers",
                                 returnsResultSet=true,
                                 resultClass=Developer.class
+                                ),
+    @NamedStoredProcedureQuery( name="Developer.findAllDevelopersByFilters", 
+                                procedureName="findAllDevelopersByFilters",
+                                returnsResultSet=true,
+                                resultClass=Developer.class,
+                                parameters={@StoredProcedureParameter(queryParameter="first_name",
+                                                                      name="first_name",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class),
+                                            @StoredProcedureParameter(queryParameter="last_name",
+                                                                      name="last_name",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class),
+                                            @StoredProcedureParameter(queryParameter="sort",
+                                                                      name="sort",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class),
+                                            @StoredProcedureParameter(queryParameter="limit",
+                                                                      name="limit",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
                                 )
 })
 public class Developer implements Serializable {

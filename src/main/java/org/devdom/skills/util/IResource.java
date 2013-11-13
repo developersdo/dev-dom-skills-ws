@@ -16,6 +16,8 @@ public final class IResource {
                                     "api/category",
                                     "api/category/page/:page-number",
                                     "api/category/id/:category-id",
+                                    "api/skill",
+                                    "api/skill/page/:page-number",
                                     "api/skill/by/category/id/:category-id",
                                     "api/skill/by/category/id/:category-id/page/:page-number",
                                     "api/skill/id/:skill-id",
@@ -23,14 +25,21 @@ public final class IResource {
                                     "api/developer/page/:page-number",
                                     "api/developer/id/:developer-id",
                                     "api/developer/id/:developer-id/page/:page-number",
-                                    "api/skill",
-                                    "api/skill/page/:page-number"
+                                    "api/developer/where?first_name=:first-name",
+                                    "api/developer/where?last_name=:last-name",
+                                    "api/developer/where?sort=:sorting",
+                                    "api/developer/where?limit=:top",
+                                    "api/developer/where?first_name=:first-name&last_name=:last-name",
+                                    "api/developer/where?first_name=:first-name&last_name=:last-name&sort=:sorting",
+                                    "api/developer/where?first_name=:first-name&last_name=:last-name&sort=:sorting&limit=:top"
                                 };
 
     public static final String[] DESCRIPTION = {
         "Lista las categorías que contienen skills de developers",
         "Lista las categorías que contienen skills de developers especificando que página se espera mostrar",
         "Retorna información sobre una categoría según su id",
+        "Lista todos los skills",
+        "Lista todos los skills, indicando que página se desea mostrar",
         "Retorna skills de developer según el id de una categoría",
         "Retorna skills de developer según el id de una categoría y especificando que página se quiere ver",
         "Retornar detalle de un skill",
@@ -38,8 +47,13 @@ public final class IResource {
         "Retornar el listado de developers, indicando la página que se desea mostrar",
         "Retorna información de un developer según su id",
         "Retorna información de un developer según su id y se especifica que página se desea mostrar",
-        "Lista todos los skills",
-        "Lista todos los skills, indicando que página se desea mostrar"
+        "Retorna el Listado de developers buscando coincidencias en el nombre",
+        "Retorna el listado de developers buscando coincidencias en el apellido",
+        "Retorna el listado de developers sorteando de forma ascendente o descendente",
+        "Retorna el listado de developers limitando según el parámetro pasado",
+        "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo",
+        "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo y sortear los resultados usando ASC o DESC",
+        "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo y sortear los resultados usando ASC o DESC y limitar la cantidad de resultados utilizando :limit",
     };
 
     public static final String getTag(String uri){
@@ -57,7 +71,11 @@ public final class IResource {
         return url.replaceAll(":page-number","1") 
                   .replaceAll(":category-id","5") //category-id = (5) programming language
                   .replaceAll(":skill-id","8901") //skill-id = (8901) JBoss 
-                  .replaceAll(":developer-id","1401"); //developer-id = 1401
+                  .replaceAll(":developer-id","1401") //developer-id = 1401
+                  .replaceAll(":first-name","Melvyn")
+                  .replaceAll(":last-name","P")
+                  .replaceAll(":sorting","asc")
+                  .replaceAll(":top","5");
     }
 
 }

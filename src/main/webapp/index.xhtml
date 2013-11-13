@@ -100,7 +100,7 @@
                 <c:forEach var="api" items="${restAPI.resources}">
                     
                     <a name="#{api.tag}-ank" id="#{api.tag}-ank"></a>
-                    <a href="##{api.tag}-ank" title="clic para ver resultados en vivo" id="run" onclick="javascript:devdom.curl('#{api.uri}','#{api.tag}')">#{api.path}</a> <code class="verb-run">GET</code>
+                    <a href="##{api.tag}-ank" title="clic para ver resultados en vivo" id="run" onclick="javascript:devdom.curl('#{api.uri}','#{api.tag}')">#{api.path}</a> <img class="bt-verb" src="images/verb_get.png"/> <a href="#{api.uri}" target="_blank"><img src="images/link.png" class="bt-link"/></a>
                     <p class="api-detail">#{api.description}</p>
                     <span id="#{api.tag}"></span>
                     
