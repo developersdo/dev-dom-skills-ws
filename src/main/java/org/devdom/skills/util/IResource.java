@@ -52,8 +52,8 @@ public final class IResource {
         "Retorna el listado de developers sorteando de forma ascendente o descendente",
         "Retorna el listado de developers limitando según el parámetro pasado",
         "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo",
-        "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo y sortear los resultados usando <code>ASC o DESC",
-        "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo y sortear los resultados usando <code>ASC o DESC y limitar la cantidad de resultados utilizando :limit",
+        "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo y sortear los resultados usando ASC o DESC",
+        "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo y sortear los resultados usando ASC o DESC y limitar la cantidad de resultados utilizando :limit",
     };
 
     public static final String getTag(String uri){
