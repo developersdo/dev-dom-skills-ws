@@ -305,10 +305,10 @@ footer {
 }
 
 
-img .bt-link img .bt-verb{
+.bt-link, .bt-verb{
     padding-left: 2px;
     position: relative;
-    top: 4px;
+    top: 5px;
 }
 
 .key{
