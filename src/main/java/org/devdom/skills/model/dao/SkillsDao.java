@@ -177,6 +177,10 @@ public class SkillsDao{
 
         }catch(Exception ex){
             ex.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
 
         return skills;
@@ -194,6 +198,10 @@ public class SkillsDao{
 
         }catch(Exception ex){
             ex.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
 
         return skills;
@@ -211,6 +219,10 @@ public class SkillsDao{
                  .getResultList();
          }catch(Exception ex){
             ex.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
 
         return skills;
@@ -228,6 +240,10 @@ public class SkillsDao{
                  .getResultList();
          }catch(Exception ex){
             ex.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
 
         return skills;
@@ -247,7 +263,12 @@ public class SkillsDao{
                     .getResultList();
         }catch(Exception ex){
             ex.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
+        
         return skills;
     }
 

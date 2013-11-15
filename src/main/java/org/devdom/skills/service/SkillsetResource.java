@@ -128,9 +128,7 @@ public class SkillsetResource {
                                                     @DefaultValue("20") @QueryParam("limit") int limit,
                                                     @HeaderParam("Accept") String acceptHeader,
                                                     @Context UriInfo uri){
-        System.out.println("categoryId: "+categoryId);
-        System.out.println("votesGt: "+votesGt);
-        System.out.println("limit: "+limit);
+
         String path = uri.getAbsolutePath().toString();
 
         return skillsDao.getAllSkillsByTopFilters(categoryId, votesGt, limit, acceptHeader, path);
@@ -139,17 +137,14 @@ public class SkillsetResource {
     
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("where/{page}")
+    @Path("where/page/{page}")
     public MasterSkillset findAllSkillsByTopFiltersAndPage(@DefaultValue("0") @QueryParam("category_id") int categoryId,
                                                     @DefaultValue("0") @QueryParam("votes_gt") int votesGt,
                                                     @DefaultValue("20") @QueryParam("limit") int limit,
                                                     @DefaultValue("1") @PathParam("page") int page,
                                                     @HeaderParam("Accept") String acceptHeader,
                                                     @Context UriInfo uri){
-        System.out.println("categoryId: "+categoryId);
-        System.out.println("votesGt: "+votesGt);
-        System.out.println("limit: "+limit);
-        System.out.println("page: "+page);
+
         String path = uri.getAbsolutePath().toString();
 
         return skillsDao.getAllSkillsByTopFilters(categoryId, votesGt, limit, acceptHeader, path, page);
