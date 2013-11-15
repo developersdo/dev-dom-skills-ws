@@ -30,7 +30,6 @@ public class SkillsDao{
     }
     
     public MasterSkillset getAllSkillsByTopFilters(int categoryId, int votesGt, int limit, String acceptHeader, String path){
-        //return this.getAllSkillsByTopFilters(categoryId, votesGt, limit, acceptHeader, path);
         return getAllSkillsByTopFilters(categoryId, votesGt, limit, acceptHeader, path, 1);
     }
 
