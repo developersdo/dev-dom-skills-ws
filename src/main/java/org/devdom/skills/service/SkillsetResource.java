@@ -118,5 +118,36 @@ public class SkillsetResource {
         return skillsDao.getSkillsByDeveloperId(id, acceptHeader, path, page);
         
     }
-   
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("where")
+    public MasterSkillset findAllSkillsByTopFilters(@DefaultValue("1") @PathParam("category_id") int categoryId,
+                                                    @DefaultValue("200") @PathParam("votes_gt") int votesGt,
+                                                    @DefaultValue("20") @PathParam("limit") int limit,
+                                                    @HeaderParam("Accept") String acceptHeader,
+                                                    @Context UriInfo uri){
+
+        String path = uri.getAbsolutePath().toString();
+
+        return skillsDao.getAllSkillsByTopFilters(categoryId, votesGt, limit, acceptHeader, path);
+
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("where/{page}")
+    public MasterSkillset findAllSkillsByTopFiltersAndPage(@DefaultValue("1") @PathParam("category_id") int categoryId,
+                                                    @DefaultValue("200") @PathParam("votes_gt") int votesGt,
+                                                    @DefaultValue("20") @PathParam("limit") int limit,
+                                                    @DefaultValue("1") @PathParam("page") int page,
+                                                    @HeaderParam("Accept") String acceptHeader,
+                                                    @Context UriInfo uri){
+
+        String path = uri.getAbsolutePath().toString();
+
+        return skillsDao.getAllSkillsByTopFilters(categoryId, votesGt, limit, acceptHeader, path, page);
+
+    }
+
 }

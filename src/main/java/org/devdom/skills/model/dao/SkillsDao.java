@@ -29,6 +29,42 @@ public class SkillsDao{
         return emf.createEntityManager();
     }
     
+    public MasterSkillset getAllSkillsByTopFilters(int categoryId, int votesGt, int limit, String acceptHeader, String path){
+        //return this.getAllSkillsByTopFilters(categoryId, votesGt, limit, acceptHeader, path);
+        return getAllSkillsByTopFilters(categoryId, votesGt, limit, acceptHeader, path, 1);
+    }
+
+    public MasterSkillset getAllSkillsByTopFilters(int categoryId, int votesGt, int limit, String acceptHeader, String path, int page) {
+
+        currentPage = page;
+        from = (currentPage-1)*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
+
+        List<Skills> skills = findAllSkillsByTopFilters(categoryId, votesGt, limit);
+        rowCount = skills.size();
+
+        to = (to>rowCount)?rowCount:to;
+
+        skills = skills.subList(from,to); 
+
+        if(categoryId!=0){
+            skillset.setCategory(category.findCategoryById(categoryId));
+        }
+
+        Pagination pagination = new Pagination();
+        pagination.setPositionCurrentPage(currentPage);
+        pagination.setRowsPerPages(ROWS_PER_PAGE);
+        pagination.setTotalRow(rowCount);
+        pagination.setDataType(acceptHeader);
+        pagination.setAbsolutePath(path);
+        pagination.generate();
+        
+        skillset.setPagination(pagination);
+        skillset.setSkills(skills);
+        
+        return skillset;
+    }
+    
     public MasterSkillset getAllSkills(String acceptHeader, String path){
         
         return getAllSkills(acceptHeader, path, 1);
@@ -197,6 +233,23 @@ public class SkillsDao{
 
         return skills;
 
+    }
+    
+    public List<Skills> findAllSkillsByTopFilters(int categoryId, int votesGt, int limit){
+        EntityManager em = emf.createEntityManager();
+        
+        List<Skills> skills = null;
+        
+        try{
+            skills = em.createNamedQuery("Skills.findAllSkillsByTopFilters")
+                    .setParameter("category_id", categoryId)
+                    .setParameter("votes_gt", votesGt)
+                    .setParameter("limit", limit)
+                    .getResultList();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return skills;
     }
 
 }
