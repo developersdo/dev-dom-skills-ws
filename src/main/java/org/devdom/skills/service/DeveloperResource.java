@@ -32,7 +32,7 @@ public class DeveloperResource {
 
         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
 
-        return developerDao.findAllDevelopers(acceptHeader, path);
+        return developerDao.getAllDevelopers(acceptHeader, path);
 
     }
     
@@ -47,7 +47,7 @@ public class DeveloperResource {
         
         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
 
-        return developerDao.findAllDevelopers(acceptHeader, path, page);
+        return developerDao.getAllDevelopers(acceptHeader, path, page);
         
     }
     
@@ -61,7 +61,7 @@ public class DeveloperResource {
 
         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
 
-        return developerDao.findMasterDeveloperBySkillId(skillID, acceptHeader, path);
+        return developerDao.getMasterDeveloperBySkillId(skillID, acceptHeader, path);
 
     }
     
@@ -76,7 +76,7 @@ public class DeveloperResource {
 
         String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
 
-        return developerDao.findMasterDeveloperBySkillId(skillID, acceptHeader, path,page);
+        return developerDao.getMasterDeveloperBySkillId(skillID, acceptHeader, path,page);
     }
     
     @GET
