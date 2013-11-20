@@ -10,12 +10,14 @@
     <class>org.devdom.skills.model.dto.MasterSkillset</class>
     <class>org.devdom.skills.model.dto.Pagination</class>
     <class>org.devdom.skills.model.dto.Skills</class>
+    <class>org.devdom.skills.model.dto.MasterUniversity</class>
+    <class>org.devdom.skills.model.dto.University</class>
     <validation-mode>CALLBACK</validation-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://us-mm-auto-dca-01.cleardb.com:3306/heroku_6d4c73df9f9091a?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.password" value="03cad82c"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="907f5ffa96f6f4"/>
+      <property name="javax.persistence.jdbc.url" value="${url}"/>
+      <property name="javax.persistence.jdbc.password" value="{$pasword}"/>
+      <property name="javax.persistence.jdbc.driver" value="${driver}"/>
+      <property name="javax.persistence.jdbc.user" value="${user}"/>
       <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
     </properties>
   </persistence-unit>
