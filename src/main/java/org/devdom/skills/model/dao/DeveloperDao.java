@@ -8,6 +8,7 @@ import org.devdom.skills.model.dto.Developer;
 import org.devdom.skills.model.dto.MasterDeveloper;
 import org.devdom.skills.model.dto.Pagination;
 import org.devdom.skills.model.dto.Skills;
+import org.devdom.skills.model.dto.University;
 import org.devdom.skills.util.IPagination;
 
 /**
@@ -20,6 +21,7 @@ public class DeveloperDao {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     private final MasterDeveloper masterDeveloper = new MasterDeveloper();
     private final SkillsDao skillDao = new SkillsDao();
+    private final UniversityDao universityDao = new UniversityDao();
     private int currentPage = 1;
     private int from = 0;
     private int to = 0;
@@ -31,6 +33,40 @@ public class DeveloperDao {
     
     public String getRealPath(String path){
         return (path.lastIndexOf("/")==(path.length()-1))?path.substring(0, path.lastIndexOf("/")):path;
+    }
+    
+    public MasterDeveloper findMasterDeveloperByUniversityId(int universityId, String acceptHeader, String url){
+        return findMasterDeveloperByUniversityId(universityId, acceptHeader, url,1);
+    }
+    
+    public MasterDeveloper findMasterDeveloperByUniversityId(int universityId, String acceptHeader, String url, int page){
+        
+        String path = getRealPath(url);
+        currentPage = page;
+
+        from = (currentPage-1)*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
+
+        List<University> university = universityDao.findUniversityById(universityId);
+        List<Developer> developers = findDevelopersByUniversityId(universityId);
+        rowCount = developers.size();
+
+        to = (to>rowCount)?rowCount:to;
+
+        developers = developers.subList(from, to);
+
+        Pagination pagination = new Pagination();
+        pagination.setPositionCurrentPage(currentPage);
+        pagination.setRowsPerPages(ROWS_PER_PAGE);
+        pagination.setTotalRow(rowCount);
+        pagination.setDataType(acceptHeader);
+        pagination.setAbsolutePath(path);
+        pagination.generate();
+        masterDeveloper.setUniversity(university);
+        masterDeveloper.setDevelopers(developers);
+        masterDeveloper.setPagination(pagination);
+
+        return masterDeveloper;
     }
     
     public MasterDeveloper findMasterDeveloperBySkillId(int skillID,String acceptHeader, String url){
@@ -225,4 +261,17 @@ public class DeveloperDao {
         }
     }
     
+    public List<Developer> findDevelopersByUniversityId(int universityId){
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (List<Developer>) em.createNamedQuery("Developer.findDevelopersByUniversityId")
+                    .setParameter("developer_id", universityId)
+                    .getResultList();
+        }finally{
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
 }
