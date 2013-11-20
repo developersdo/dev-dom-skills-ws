@@ -25,6 +25,10 @@ public class MasterDeveloper implements Serializable {
     @OneToMany
     private List<Developer> developers;
     
+    @Id
+    @OneToMany
+    private List<University> university;
+
     @OneToOne
     private Pagination pagination;
 
@@ -75,6 +79,20 @@ public class MasterDeveloper implements Serializable {
      */
     public void setPagination(Pagination pagination) {
         this.pagination = pagination;
+    }
+
+    /**
+     * @return the university
+     */
+    public List<University> getUniversity() {
+        return university;
+    }
+
+    /**
+     * @param university the university to set
+     */
+    public void setUniversity(List<University> university) {
+        this.university = university;
     }
     
     
