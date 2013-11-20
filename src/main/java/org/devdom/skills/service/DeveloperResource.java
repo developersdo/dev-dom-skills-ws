@@ -140,5 +140,32 @@ public class DeveloperResource {
         return developerDao.getAllDevelopersByFilters(firstName, lastName, sort, limit, acceptHeader, path, page);
         
     }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("by/university/id/{universityId}")
+    public MasterDeveloper getMasterDeveloperByUniversityId(@PathParam("universityId") int universityId,
+                                                            @HeaderParam("Accept") String acceptHeader,
+                                                            @Context UriInfo uri){
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return developerDao.getMasterDeveloperByUniversityId(universityId, acceptHeader, path);
+        
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("by/university/id/{universityId}/page/{page}")
+    public MasterDeveloper getMasterDeveloperByUniversityIdAndPage(@PathParam("universityId") int universityId,
+                                                            @HeaderParam("Accept") String acceptHeader,
+                                                            @DefaultValue("1") @PathParam("page") int page,
+                                                            @Context UriInfo uri){
+
+        String path = categoryDao.getRealPath(uri.getAbsolutePath().toString());
+
+        return developerDao.getMasterDeveloperByUniversityId(universityId, acceptHeader, path, page);
+        
+    }
 
 }
