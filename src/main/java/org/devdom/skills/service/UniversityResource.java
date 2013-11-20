@@ -2,6 +2,7 @@ package org.devdom.skills.service;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -14,6 +15,7 @@ import org.devdom.skills.model.dto.MasterUniversity;
  *
  * @author Carlos Vásquez Polanco
  */
+@Path("/university")
 public class UniversityResource {
     
     CategoryDao categoryDao = new CategoryDao();
