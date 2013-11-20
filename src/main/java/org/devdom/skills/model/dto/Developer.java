@@ -63,6 +63,15 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="limit",
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="University.findDevelopersByUniversityId", 
+                                procedureName="findDevelopersByUniversityId",
+                                returnsResultSet=true,
+                                resultClass=Developer.class,
+                                parameters={@StoredProcedureParameter(queryParameter="university_id",
+                                                                      name="university_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
                                 )
 })
 public class Developer implements Serializable {
