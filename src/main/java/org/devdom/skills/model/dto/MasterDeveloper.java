@@ -25,7 +25,6 @@ public class MasterDeveloper implements Serializable {
     @OneToMany
     private List<Developer> developers;
     
-    @Id
     @OneToMany
     private List<University> university;
 

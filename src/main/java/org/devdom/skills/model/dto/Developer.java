@@ -64,7 +64,7 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)}
                                 ),
-    @NamedStoredProcedureQuery( name="University.findDevelopersByUniversityId", 
+    @NamedStoredProcedureQuery( name="Developer.findDevelopersByUniversityId", 
                                 procedureName="findDevelopersByUniversityId",
                                 returnsResultSet=true,
                                 resultClass=Developer.class,

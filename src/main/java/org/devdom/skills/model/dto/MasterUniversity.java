@@ -18,11 +18,9 @@ public class MasterUniversity implements Serializable {
     @Id
     private Long id;
 
-    @Id
     @OneToMany
     private List<Developer> developers;
-    
-    @Id
+
     @OneToMany
     private List<University> university;
     

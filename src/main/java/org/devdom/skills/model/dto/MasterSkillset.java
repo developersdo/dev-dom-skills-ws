@@ -20,11 +20,9 @@ public class MasterSkillset implements Serializable {
     @Id
     private Long id = 1L;
     
-    @Id
     @OneToMany
     private List<Category> category;
     
-    @Id
     @OneToMany
     private List<Skills> skills;
     
