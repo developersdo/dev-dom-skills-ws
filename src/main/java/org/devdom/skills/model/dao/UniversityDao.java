@@ -17,7 +17,6 @@ public class UniversityDao {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     
     MasterUniversity masterUniversity = new MasterUniversity();
-    DeveloperDao developer = new DeveloperDao();
     private final int ROWS_PER_PAGE = 10;
     private int from = 0;
     private int to = 0;
