@@ -21,7 +21,6 @@ public class DeveloperDao {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     private final MasterDeveloper masterDeveloper = new MasterDeveloper();
     private final SkillsDao skillDao = new SkillsDao();
-    private final UniversityDao universityDao = new UniversityDao();
     private int currentPage = 1;
     private int from = 0;
     private int to = 0;
@@ -47,6 +46,7 @@ public class DeveloperDao {
         from = (currentPage-1)*ROWS_PER_PAGE;
         to = (from+ROWS_PER_PAGE);
 
+        UniversityDao universityDao = new UniversityDao();
         List<University> university = universityDao.findUniversityById(universityId);
         List<Developer> developers = findDevelopersByUniversityId(universityId);
         rowCount = developers.size();
@@ -184,6 +184,7 @@ public class DeveloperDao {
         from = (currentPage-1)*ROWS_PER_PAGE;
         to = (from+ROWS_PER_PAGE);
         
+        UniversityDao universityDao = new UniversityDao();
         List<University> university = universityDao.findUniversityByDeveloperId(id);
         List<Developer> developers = findDeveloperById(id);
         List<Skills> skills = skillDao.findSkillsByDeveloperId(id);
@@ -266,7 +267,7 @@ public class DeveloperDao {
         EntityManager em = emf.createEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findDevelopersByUniversityId")
-                    .setParameter("developer_id", universityId)
+                    .setParameter("university_id", universityId)
                     .getResultList();
         }finally{
             if (em != null) {
