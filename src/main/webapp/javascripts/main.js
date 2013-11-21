@@ -137,20 +137,33 @@ devdom = (function( $, undefined ){
                                '/developer/by/skill/id/'+skills.syntax.nodeId)+
                                '\',\''+skills.displaySource+'\');">'+current+'</a>'); 
                     }
+                    if(prev==='"votes":' && skills.path==='university'){
+                        return('<a href="javascript:devdom.curl(\''+(skills.service + 
+                               '/developer/by/university/id/'+skills.syntax.nodeId)+
+                               '\',\''+skills.displaySource+'\');">'+skills.syntax.nodeId+'</a>');
+                    }
                     if(prev==='"skills":' && skills.path==='developer'){
                         return('<a href="javascript:devdom.curl(\''+(skills.service + 
                                '/skill/by/category/id/'+skills.syntax.nodeId)+
                                '\',\''+skills.displaySource+'\');">'+current+'</a>'); 
                     }
-                    if(prev==='"picture":' && skills.path==='developer'){
-                        return('<a target="_blank" href="'+current.replace(/"/g,'')+'" class="profile-picture">'+current+'</a>'); 
+                    if(prev==='"id":' && skills.path==='university'){
+                        skills.syntax.nodeId = current;
+                        return('<a href="javascript:devdom.curl(\''+(skills.service + 
+                               '/university/id/'+skills.syntax.nodeId)+
+                               '\',\''+skills.displaySource+'\');">'+skills.syntax.nodeId+'</a>');
                     }
+                    if(prev==='"picture":' && skills.path==='developer'){
+                        return('<a target="_blank" href="'+current.replace(/"/g,'')+'" class="profile-picture">'+current+'</a>');
+                    }
+                    
                     return current;
                 }
 
                 if(((skills.resource.replace(/\//,'')).indexOf('category')===0) ||
                    ((skills.resource.replace(/\//,'')).indexOf('skill')===0) ||
-                   ((skills.resource.replace(/\//,'')).indexOf('developer')===0)
+                   ((skills.resource.replace(/\//,'')).indexOf('developer')===0) ||
+                   ((skills.resource.replace(/\//,'')).indexOf('university')===0)
                   ){
                         if(skills.syntax.header==='pagination'){
                             if(prev==='"url":'){
@@ -165,6 +178,8 @@ devdom = (function( $, undefined ){
                             return createLinks(prev,current,'skill','skill');
                         }else if(skills.syntax.header==='developers'){
                             return createLinks(prev,current,'developer','developer');
+                        }else if(skills.syntax.header==='university'){
+                            return createLinks(prev,current,'university','developer');
                         }
                         return current;
                     }
@@ -176,6 +191,7 @@ devdom = (function( $, undefined ){
                     case '"pagination":': skills.syntax.header='pagination';break;
                     case '"skills":'    : skills.syntax.header='skill';break;
                     case '"developers":': skills.syntax.header='developers';break;
+                    case '"university":': skills.syntax.header='university';break;
                 }
             },
             highlight : function(){
