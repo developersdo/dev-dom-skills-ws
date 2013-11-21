@@ -15,6 +15,7 @@ public final class IResource {
     public static final String[] URI = {
                                     "api/university",
                                     "api/university/page/:page-number",
+                                    "api/university/id/:university_id",
                                     "api/category",
                                     "api/category/page/:page-number",
                                     "api/category/id/:category-id",
@@ -41,6 +42,7 @@ public final class IResource {
     public static final String[] DESCRIPTION = {
         "Listado de universidades",
         "Listado de universidades mostrando según la página indicada",
+        "Retorna la información de una universidad según su ID",
         "Lista las categorías que contienen skills de developers",
         "Lista las categorías que contienen skills de developers especificando que página se espera mostrar",
         "Retorna información sobre una categoría según su id",
