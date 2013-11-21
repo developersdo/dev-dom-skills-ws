@@ -13,6 +13,9 @@ public final class IResource {
     public static final String API_PATH = "http://skills-devdom.herokuapp.com/";
 
     public static final String[] URI = {
+                                    "api/university",
+                                    "api/university/page/:page-number",
+                                    "api/university/id/:university_id",
                                     "api/category",
                                     "api/category/page/:page-number",
                                     "api/category/id/:category-id",
@@ -31,10 +34,15 @@ public final class IResource {
                                     "api/developer/where?limit=:top",
                                     "api/developer/where?first_name=:first-name&last_name=:last-name",
                                     "api/developer/where?first_name=:first-name&last_name=:last-name&sort=:sorting",
-                                    "api/developer/where?first_name=:first-name&last_name=:last-name&sort=:sorting&limit=:top"
+                                    "api/developer/where?first_name=:first-name&last_name=:last-name&sort=:sorting&limit=:top",
+                                    "api/developer/by/university/id/:university_id",
+                                    "api/developer/by/university/id/:university_id/page/:page-number"
                                 };
 
     public static final String[] DESCRIPTION = {
+        "Listado de universidades",
+        "Listado de universidades mostrando según la página indicada",
+        "Retorna la información de una universidad según su ID",
         "Lista las categorías que contienen skills de developers",
         "Lista las categorías que contienen skills de developers especificando que página se espera mostrar",
         "Retorna información sobre una categoría según su id",
@@ -54,6 +62,8 @@ public final class IResource {
         "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo",
         "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo y sortear los resultados usando ASC o DESC",
         "Lista developers realizando las conbinaciones de buscar por el :first-name así como por el :last-name al mismo tiempo y sortear los resultados usando ASC o DESC y limitar la cantidad de resultados utilizando :limit",
+        "Listado de developers según el ID de una universidad",
+        "Listado de developers según el ID de una universidad y la página a mostrar"
     };
 
     public static final String getTag(String uri){
@@ -75,7 +85,8 @@ public final class IResource {
                   .replaceAll(":first-name","Melvyn")
                   .replaceAll(":last-name","P")
                   .replaceAll(":sorting","asc")
-                  .replaceAll(":top","5");
+                  .replaceAll(":top","5")
+                  .replaceAll(":university_id","1411");
     }
 
 }

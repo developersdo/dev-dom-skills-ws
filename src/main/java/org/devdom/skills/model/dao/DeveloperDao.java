@@ -8,6 +8,7 @@ import org.devdom.skills.model.dto.Developer;
 import org.devdom.skills.model.dto.MasterDeveloper;
 import org.devdom.skills.model.dto.Pagination;
 import org.devdom.skills.model.dto.Skills;
+import org.devdom.skills.model.dto.University;
 import org.devdom.skills.util.IPagination;
 
 /**
@@ -33,13 +34,48 @@ public class DeveloperDao {
         return (path.lastIndexOf("/")==(path.length()-1))?path.substring(0, path.lastIndexOf("/")):path;
     }
     
-    public MasterDeveloper findMasterDeveloperBySkillId(int skillID,String acceptHeader, String url){
+    public MasterDeveloper getMasterDeveloperByUniversityId(int universityId, String acceptHeader, String url){
+        return getMasterDeveloperByUniversityId(universityId, acceptHeader, url,1);
+    }
+    
+    public MasterDeveloper getMasterDeveloperByUniversityId(int universityId, String acceptHeader, String url, int page){
+        
+        String path = getRealPath(url);
+        currentPage = page;
 
-        return findMasterDeveloperBySkillId(skillID,acceptHeader,url,1);
+        from = (currentPage-1)*ROWS_PER_PAGE;
+        to = (from+ROWS_PER_PAGE);
+
+        UniversityDao universityDao = new UniversityDao();
+        List<University> university = universityDao.findUniversityById(universityId);
+        List<Developer> developers = findDevelopersByUniversityId(universityId);
+        rowCount = developers.size();
+
+        to = (to>rowCount)?rowCount:to;
+
+        developers = developers.subList(from, to);
+
+        Pagination pagination = new Pagination();
+        pagination.setPositionCurrentPage(currentPage);
+        pagination.setRowsPerPages(ROWS_PER_PAGE);
+        pagination.setTotalRow(rowCount);
+        pagination.setDataType(acceptHeader);
+        pagination.setAbsolutePath(path);
+        pagination.generate();
+        masterDeveloper.setUniversity(university);
+        masterDeveloper.setDevelopers(developers);
+        masterDeveloper.setPagination(pagination);
+
+        return masterDeveloper;
+    }
+    
+    public MasterDeveloper getMasterDeveloperBySkillId(int skillID,String acceptHeader, String url){
+
+        return getMasterDeveloperBySkillId(skillID,acceptHeader,url,1);
         
     }
 
-    public MasterDeveloper findMasterDeveloperBySkillId(int skillID, String acceptHeader, String url, int page) {
+    public MasterDeveloper getMasterDeveloperBySkillId(int skillID, String acceptHeader, String url, int page) {
         
         String path = getRealPath(url);
         currentPage = page;
@@ -70,11 +106,11 @@ public class DeveloperDao {
         return masterDeveloper;
     }
     
-    public MasterDeveloper findAllDevelopers(String acceptHeader, String url){
-        return findAllDevelopers(acceptHeader, url, 1);
+    public MasterDeveloper getAllDevelopers(String acceptHeader, String url){
+        return getAllDevelopers(acceptHeader, url, 1);
     }
     
-    public MasterDeveloper findAllDevelopers(String acceptHeader, String url, int page){
+    public MasterDeveloper getAllDevelopers(String acceptHeader, String url, int page){
     
         String path = getRealPath(url);
         currentPage = page;
@@ -116,7 +152,7 @@ public class DeveloperDao {
         to = (from+ROWS_PER_PAGE);
         
         
-        List<Developer> developers = this.findAllDevelopersByFilters(firstName, lastName, sort, limit);
+        List<Developer> developers = findAllDevelopersByFilters(firstName, lastName, sort, limit);
         rowCount = developers.size();
 
         to = (to>rowCount)?rowCount:to;
@@ -148,7 +184,8 @@ public class DeveloperDao {
         from = (currentPage-1)*ROWS_PER_PAGE;
         to = (from+ROWS_PER_PAGE);
         
-        
+        UniversityDao universityDao = new UniversityDao();
+        List<University> university = universityDao.findUniversityByDeveloperId(id);
         List<Developer> developers = findDeveloperById(id);
         List<Skills> skills = skillDao.findSkillsByDeveloperId(id);
         rowCount = skills.size();
@@ -164,6 +201,7 @@ public class DeveloperDao {
         pagination.setDataType(acceptHeader);
         pagination.setAbsolutePath(path);
         pagination.generate();
+        masterDeveloper.setUniversity(university);
         masterDeveloper.setDevelopers(developers);
         masterDeveloper.setSkills(skills);
         masterDeveloper.setPagination(pagination);
@@ -183,7 +221,7 @@ public class DeveloperDao {
             }
         }
     }
-    
+
     public List<Developer> findDeveloperById(int id){
         EntityManager em=emf.createEntityManager();
         try{
@@ -225,4 +263,17 @@ public class DeveloperDao {
         }
     }
     
+    public List<Developer> findDevelopersByUniversityId(int universityId){
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (List<Developer>) em.createNamedQuery("Developer.findDevelopersByUniversityId")
+                    .setParameter("university_id", universityId)
+                    .getResultList();
+        }finally{
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
 }

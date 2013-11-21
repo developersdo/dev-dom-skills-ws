@@ -52,6 +52,23 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 procedureName="findAllSkills",
                                 returnsResultSet=true,
                                 resultClass=Skills.class
+                                ),
+    @NamedStoredProcedureQuery( name="Skills.findAllSkillsByTopFilters", 
+                                procedureName="findAllSkillsByTopFilters",
+                                returnsResultSet=true,
+                                resultClass=Skills.class,
+                                parameters={@StoredProcedureParameter(queryParameter="category_id",
+                                                                      name="category_id",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="votes_gt",
+                                                                      name="votes_gt",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="limit",
+                                                                      name="limit",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
                                 )
 })
 public class Skills implements Serializable{

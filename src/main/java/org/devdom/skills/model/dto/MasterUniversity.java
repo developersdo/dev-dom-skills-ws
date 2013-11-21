@@ -12,42 +12,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Carlos Vásquez Polanco
  */
-
 @Entity
 @XmlRootElement
-public class MasterSkillset implements Serializable {
-    
+public class MasterUniversity implements Serializable {
     @Id
-    private Long id = 1L;
-    
-    @OneToMany
-    private List<Category> category;
-    
-    @OneToMany
-    private List<Skills> skills;
-    
+    private Long id;
+
     @OneToMany
     private List<Developer> developers;
+
+    @OneToMany
+    private List<University> university;
     
     @OneToOne
     private Pagination pagination;
-
-    public List<Skills> getSkills() {
-        return skills;
+    
+    public Long getId() {
+        return id;
     }
-
-    public void setSkills(List<Skills> skills) {
-        this.skills = skills;
-    }
-
-    public List<Category> getCategory() {
-        return category;
-    }
-
-    public void setCategory(List<Category> category) {
-        this.category = category;
-    }
-
+    
     /**
      * @return the pagination
      */
@@ -61,11 +44,7 @@ public class MasterSkillset implements Serializable {
     public void setPagination(Pagination pagination) {
         this.pagination = pagination;
     }
-
-    public Long getId() {
-        return id;
-    }
-
+    
     /**
      * @return the developers
      */
@@ -79,5 +58,19 @@ public class MasterSkillset implements Serializable {
     public void setDevelopers(List<Developer> developers) {
         this.developers = developers;
     }
-      
+
+    /**
+     * @return the university
+     */
+    public List<University> getUniversity() {
+        return university;
+    }
+
+    /**
+     * @param university the university to set
+     */
+    public void setUniversity(List<University> university) {
+        this.university = university;
+    }
+    
 }
