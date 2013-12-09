@@ -15,7 +15,7 @@ public final class IResource {
     public static final String[] URI = {
                                     "api/university",
                                     "api/university/page/:page-number",
-                                    "api/university/id/:university_id",
+                                    "api/university/id/:university-id",
                                     "api/category",
                                     "api/category/page/:page-number",
                                     "api/category/id/:category-id",
@@ -24,6 +24,10 @@ public final class IResource {
                                     "api/skill/by/category/id/:category-id",
                                     "api/skill/by/category/id/:category-id/page/:page-number",
                                     "api/skill/id/:skill-id",
+                                    "api/skill/where?votes_gt=:votes-gt",
+                                    "api/skill/where?category_id=:category-id",
+                                    "api/skill/where?limit=:top",
+                                    
                                     "api/developer",
                                     "api/developer/page/:page-number",
                                     "api/developer/id/:developer-id",
@@ -51,6 +55,9 @@ public final class IResource {
         "Retorna skills de developer según el id de una categoría",
         "Retorna skills de developer según el id de una categoría y especificando que página se quiere ver",
         "Retornar detalle de un skill",
+        "Retorna el listado de skills con parámetros combinados partiendo de un número mínimo de votos",
+        "Retorna el listado de skills con parámetros combinados según el id de una categoría",
+        "Retorna el listado de skills con parámetros combinados pudiendo indicar la máxima cantidad de elementos a mostrar",
         "Retornar el listado de developers",
         "Retornar el listado de developers, indicando la página que se desea mostrar",
         "Retorna información de un developer según su id",
@@ -86,7 +93,8 @@ public final class IResource {
                   .replaceAll(":last-name","P")
                   .replaceAll(":sorting","asc")
                   .replaceAll(":top","5")
-                  .replaceAll(":university_id","1411");
+                  .replaceAll(":university-id","1411")
+                  .replaceAll(":votes-gt","300");
     }
 
 }
