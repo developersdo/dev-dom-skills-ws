@@ -2,8 +2,7 @@ package org.devdom.skills.model.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.devdom.skills.util.EntityManagerFactory;
 import org.devdom.skills.model.dto.MasterUniversity;
 import org.devdom.skills.model.dto.Pagination;
 import org.devdom.skills.model.dto.University;
@@ -14,17 +13,20 @@ import org.devdom.skills.model.dto.University;
  */
 public class UniversityDao {
     
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-    
-    MasterUniversity masterUniversity = new MasterUniversity();
+    private final MasterUniversity masterUniversity = new MasterUniversity();
+    private final EntityManagerFactory emf;
     private final int ROWS_PER_PAGE = 10;
     private int from = 0;
     private int to = 0;
     private int rowCount = 0;
     private int currentPage = 1;
     
+    public UniversityDao(){
+        emf = new EntityManagerFactory();
+    }
+
     public EntityManager getEntityManager(){
-        return emf.createEntityManager();
+        return emf.getEntityManager();
     }
     
     public List<University> getUniversityById(int universityId,String acceptHeader, String path){
@@ -64,7 +66,7 @@ public class UniversityDao {
     
     public List<University> findAllUniversities(){
 
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         List<University> universities = null; 
         try{
             universities = em.createNamedQuery("University.findAllUniversities")
@@ -80,7 +82,7 @@ public class UniversityDao {
     }
     
     public List<University> findUniversityById(int universityId){
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         List<University> university = null; 
         try{
             university = em.createNamedQuery("University.findUniversityById")
@@ -97,7 +99,7 @@ public class UniversityDao {
     }
     
     public List<University> findUniversityByDeveloperId(int developerId){
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         List<University> university = null;
         try{
             university = em.createNamedQuery("University.findUniversityByDeveloperId")

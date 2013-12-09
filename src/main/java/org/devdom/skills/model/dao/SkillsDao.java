@@ -2,8 +2,7 @@ package org.devdom.skills.model.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.devdom.skills.util.EntityManagerFactory;
 import org.devdom.skills.model.dto.MasterSkillset;
 import org.devdom.skills.model.dto.Pagination;
 import org.devdom.skills.model.dto.Skills;
@@ -15,18 +14,22 @@ import org.devdom.skills.model.dto.Skills;
  */
 public class SkillsDao{
     
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-    
-    MasterSkillset skillset = new MasterSkillset();
-    CategoryDao category = new CategoryDao();
+    private final EntityManagerFactory emf;
+
+    private final MasterSkillset skillset = new MasterSkillset();
+    private final CategoryDao category = new CategoryDao();
     private final int ROWS_PER_PAGE = 10;
     private int from = 0;
     private int to = 0;
     private int rowCount = 0;
     private int currentPage = 1;
     
+    public SkillsDao(){
+        emf = new EntityManagerFactory();
+    }
+
     public EntityManager getEntityManager(){
-        return emf.createEntityManager();
+        return emf.getEntityManager();
     }
     
     public MasterSkillset getAllSkillsByTopFilters(int categoryId, int votesGt, int limit, String acceptHeader, String path){
@@ -167,7 +170,7 @@ public class SkillsDao{
 
     private List<Skills> findSkillsByCategoryId(int category_id){
         
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         List<Skills> skills = null; 
         try{
 
@@ -188,7 +191,7 @@ public class SkillsDao{
     
     public List<Skills> findSkillsByDeveloperId(int developerId){
         
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         List<Skills> skills = null; 
         try{
 
@@ -209,7 +212,7 @@ public class SkillsDao{
     
     public List<Skills> findSkillsById(int id){
 
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         
         List<Skills> skills = null; 
         
@@ -231,7 +234,7 @@ public class SkillsDao{
     
     public List<Skills> findAllSkills(){
 
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         
         List<Skills> skills = null; 
         
@@ -251,7 +254,7 @@ public class SkillsDao{
     }
     
     public List<Skills> findAllSkillsByTopFilters(int categoryId, int votesGt, int limit){
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         
         List<Skills> skills = null;
         

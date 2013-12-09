@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="jpa" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>org.devdom.skills.model.dto.Category</class>
+    <class>org.devdom.skills.model.dto.Developer</class>
+    <class>org.devdom.skills.model.dto.ErrorHandler</class>
+    <class>org.devdom.skills.model.dto.MasterCategory</class>
+    <class>org.devdom.skills.model.dto.MasterDeveloper</class>
+    <class>org.devdom.skills.model.dto.MasterSkillset</class>
+    <class>org.devdom.skills.model.dto.Pagination</class>
+    <class>org.devdom.skills.model.dto.Skills</class>
+    <class>org.devdom.skills.model.dto.MasterUniversity</class>
+    <class>org.devdom.skills.model.dto.University</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuizOptionVotes</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuizOptions</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuizQuestions</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuizQuestionVotes</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuiz</class>
+    <validation-mode>CALLBACK</validation-mode>
+    <properties>
+        <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
+    </properties>
+  </persistence-unit>
+</persistence>
