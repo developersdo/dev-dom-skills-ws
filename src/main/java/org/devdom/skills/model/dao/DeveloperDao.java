@@ -2,8 +2,7 @@ package org.devdom.skills.model.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.devdom.skills.util.EntityManagerFactory;
 import org.devdom.skills.model.dto.Developer;
 import org.devdom.skills.model.dto.MasterDeveloper;
 import org.devdom.skills.model.dto.Pagination;
@@ -27,11 +26,11 @@ public class DeveloperDao {
     private int rowCount = 0;
 
     public DeveloperDao(){
-        emf = Persistence.createEntityManagerFactory("jpa");
+        emf = new EntityManagerFactory();
     }
 
     public EntityManager getEntityManager(){
-        return emf.createEntityManager();
+        return emf.getEntityManager();
     }
 
     public String getRealPath(String path){
@@ -214,7 +213,7 @@ public class DeveloperDao {
     }
     
     private List<Developer> findDevelopersBySkillId(int skillID){
-        EntityManager em=emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findDevelopersBySkillId")
                     .setParameter("skill_id", skillID)
@@ -227,7 +226,7 @@ public class DeveloperDao {
     }
 
     public List<Developer> findDeveloperById(int id){
-        EntityManager em=emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findDeveloperById")
                     .setParameter("id", id)
@@ -240,7 +239,7 @@ public class DeveloperDao {
     }
     
     public List<Developer> findAllDevelopers(){
-        EntityManager em=emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findAllDevelopers")
                     .getResultList();
@@ -252,7 +251,7 @@ public class DeveloperDao {
     }
     
     public List<Developer> findAllDevelopersByFilters(String firstName, String lastName, String sort, int limit){
-        EntityManager em=emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findAllDevelopersByFilters")
                     .setParameter("first_name",firstName)
@@ -268,7 +267,7 @@ public class DeveloperDao {
     }
     
     public List<Developer> findDevelopersByUniversityId(int universityId){
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try{
             return (List<Developer>) em.createNamedQuery("Developer.findDevelopersByUniversityId")
                     .setParameter("university_id", universityId)
