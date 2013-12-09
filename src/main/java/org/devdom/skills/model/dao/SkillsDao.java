@@ -15,16 +15,20 @@ import org.devdom.skills.model.dto.Skills;
  */
 public class SkillsDao{
     
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-    
-    MasterSkillset skillset = new MasterSkillset();
-    CategoryDao category = new CategoryDao();
+    private final EntityManagerFactory emf;
+
+    private final MasterSkillset skillset = new MasterSkillset();
+    private final CategoryDao category = new CategoryDao();
     private final int ROWS_PER_PAGE = 10;
     private int from = 0;
     private int to = 0;
     private int rowCount = 0;
     private int currentPage = 1;
     
+    public SkillsDao(){
+        emf = Persistence.createEntityManagerFactory("jpa");
+    }
+
     public EntityManager getEntityManager(){
         return emf.createEntityManager();
     }

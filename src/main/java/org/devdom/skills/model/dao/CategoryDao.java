@@ -18,13 +18,17 @@ import org.devdom.skills.util.IPagination;
 public class CategoryDao implements Serializable {
 
     private final int ROWS_PER_PAGE = IPagination.ROWS_PER_PAGE;
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-    MasterCategory masterCategory = new MasterCategory();
+    private final EntityManagerFactory emf;
+    private final MasterCategory masterCategory = new MasterCategory();
     private int currentPage = 1;
     private int from = 0;
     private int to = 0;
 
     private int rowCount = 0;
+    
+    public CategoryDao(){
+        emf = Persistence.createEntityManagerFactory("jpa");
+    }
 
     public EntityManager getEntityManager(){
         return emf.createEntityManager();

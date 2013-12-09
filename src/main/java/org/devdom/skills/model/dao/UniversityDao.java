@@ -14,15 +14,18 @@ import org.devdom.skills.model.dto.University;
  */
 public class UniversityDao {
     
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-    
-    MasterUniversity masterUniversity = new MasterUniversity();
+    private final MasterUniversity masterUniversity = new MasterUniversity();
+    private final EntityManagerFactory emf;
     private final int ROWS_PER_PAGE = 10;
     private int from = 0;
     private int to = 0;
     private int rowCount = 0;
     private int currentPage = 1;
     
+    public UniversityDao(){
+        emf = Persistence.createEntityManagerFactory("jpa");
+    }
+
     public EntityManager getEntityManager(){
         return emf.createEntityManager();
     }

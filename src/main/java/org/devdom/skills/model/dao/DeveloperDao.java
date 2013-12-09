@@ -18,18 +18,22 @@ import org.devdom.skills.util.IPagination;
 public class DeveloperDao {
     
     private final int ROWS_PER_PAGE = IPagination.ROWS_PER_PAGE;
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+    private final EntityManagerFactory emf;
     private final MasterDeveloper masterDeveloper = new MasterDeveloper();
     private final SkillsDao skillDao = new SkillsDao();
     private int currentPage = 1;
     private int from = 0;
     private int to = 0;
     private int rowCount = 0;
-    
+
+    public DeveloperDao(){
+        emf = Persistence.createEntityManagerFactory("jpa");
+    }
+
     public EntityManager getEntityManager(){
         return emf.createEntityManager();
     }
-    
+
     public String getRealPath(String path){
         return (path.lastIndexOf("/")==(path.length()-1))?path.substring(0, path.lastIndexOf("/")):path;
     }
