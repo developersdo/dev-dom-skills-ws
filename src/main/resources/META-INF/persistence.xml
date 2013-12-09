@@ -12,13 +12,14 @@
     <class>org.devdom.skills.model.dto.Skills</class>
     <class>org.devdom.skills.model.dto.MasterUniversity</class>
     <class>org.devdom.skills.model.dto.University</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuizOptionVotes</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuizOptions</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuizQuestions</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuizQuestionVotes</class>
+    <class>org.devdom.skills.model.dto.SkillsetQuiz</class>
     <validation-mode>CALLBACK</validation-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="${url}"/>
-      <property name="javax.persistence.jdbc.password" value="{$pasword}"/>
-      <property name="javax.persistence.jdbc.driver" value="${driver}"/>
-      <property name="javax.persistence.jdbc.user" value="${user}"/>
-      <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
+        <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
     </properties>
   </persistence-unit>
 </persistence>
