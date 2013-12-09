@@ -15,7 +15,9 @@
         <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 	<!-- jQuery -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+        <script src="http://www.amcharts.com/lib/3/pie.js"></script>
         <!-- jQuery rest -->
         <script src="javascripts/main.js"></script>        
     </h:head>
@@ -36,11 +38,87 @@
                 </h3>
                 <p>
                     Este proyecto fue creado con la finalidad de dar acceso a la data creciente acerca de los lenguajes que conocen 
-                    los developers del grupo Developers Dominicanos. Dicha data es recopilada mediante las encuestas publicadas en:<br/>
+                    los developers del grupo Developers Dominicanos. Dicha data es recopilada mediante las encuestas publicadas en:<br/> <br/>
                     -<a href="http://on.fb.me/SkillsDD">http://on.fb.me/SkillsDD</a><br/>
                     -<a href="http://on.fb.me/SkillsDD_Manejadores_de_Version">http://on.fb.me/SkillsDD_Manejadores_de_Version</a><br/>
-                    -<a href="http://on.fb.me/SkillsDD_Plataforma_de_desarrollo">http://on.fb.me/SkillsDD_Plataforma_de_desarrollo</a><br/><br/>
+                    -<a href="http://on.fb.me/SkillsDD_Plataforma_de_desarrollo">http://on.fb.me/SkillsDD_Plataforma_de_desarrollo</a><br/>
                 </p>
+                <h3>Skills más populares entre los developers del grupo Developers Dominicanos</h3>
+                <p>
+                    En la gráfica se muestran los #{topSkills.skills.size()} skills más votados
+                    <script language="javascript">
+                        var chartSkills;
+                        var chartData = [];
+                        var newSkill = null;
+                        
+                        <c:forEach var="top" items="${topSkills.skills}">
+                            newSkill  = {"skill":"#{top.name}","votes":"#{top.votes}"};
+                            chartData.push(newSkill)
+                        </c:forEach>
+                        
+                        legendSkills = new AmCharts.AmLegend();
+                        legendSkills.align = "center";
+                        legendSkills.markerType = "square";
+
+                        chartSkills = new AmCharts.AmPieChart();
+                        chartSkills.dataProvider = chartData;
+                        chartSkills.titleField = "skill";
+                        chartSkills.valueField = "votes";
+                        chartSkills.sequencedAnimation = true;
+                        chartSkills.startEffect = "elastic";
+                        chartSkills.innerRadius = "30%";
+                        chartSkills.startDuration = 2;
+                        chartSkills.labelRadius = 15;
+                        chartSkills.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+                        chartSkills.depth3D = 20;
+                        chartSkills.angle = 35;
+                        chartSkills.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+                    </script>
+                    <div id="chartSkills" style="width: 100%; height: 362px;"></div>
+                </p>
+                <h3>Languajes más populares entre los developers del grupo Developers Dominicanos</h3>
+                <p>
+                    En la gráfica se muestran los #{topSkills.languages.size()} lenguajes más votados
+                    <script language="javascript">
+                        var chartLanguages;
+                        var chartData = [];
+                        var newSkill = null;
+                        
+                        <c:forEach var="top" items="${topSkills.languages}">
+                            newSkill  = {"skill":"#{top.name}","votes":"#{top.votes}"};
+                            chartData.push(newSkill)
+                        </c:forEach>
+                        
+                        legendLanguages = new AmCharts.AmLegend();
+                        legendLanguages.align = "center";
+                        legendLanguages.markerType = "square";
+
+                        chartLanguages = new AmCharts.AmPieChart();
+                        chartLanguages.dataProvider = chartData;
+                        chartLanguages.titleField = "skill";
+                        chartLanguages.valueField = "votes";
+                        chartLanguages.sequencedAnimation = true;
+                        chartLanguages.startEffect = "elastic";
+                        chartLanguages.innerRadius = "30%";
+                        chartLanguages.startDuration = 2;
+                        chartLanguages.labelRadius = 15;
+                        chartLanguages.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+                        chartLanguages.depth3D = 20;
+                        chartLanguages.angle = 35;
+                        chartLanguages.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+                            
+                        AmCharts.ready(function () {
+                            chartLanguages.addLegend(legendLanguages);
+                            chartLanguages.write("chartLanguages");
+
+                            chartSkills.addLegend(legendSkills);
+                            chartSkills.write("chartSkills");
+                            
+                        });
+                    </script>
+                    <div id="chartLanguages" style="width: 100%; height: 362px;"></div>
+                </p>
+                <h3>Acceso</h3>
                 <p> Todos los accesos al API son vía <code>HTTP</code> utilizando el verbo <code>GET</code> desde el dominio <code>http://skills-devdom.herokuapp.com/</code>, las respuestas son entregas al cliente tanto en formato <code>XML</code> como <code>JSON</code>.</p>
                 <h3>Retorno de data</h3>
                 <p>La data retornada puede ser transformada a formato <code>JSON</code> o <code>XML</code> dependiendo del modo en que se realice la llamada.</p>
