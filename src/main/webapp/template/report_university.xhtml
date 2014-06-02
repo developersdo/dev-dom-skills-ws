@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:body>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <br/>
+        <c:choose>
+            <c:when test="${param.report == 'university-popular-skills'}">
+                10 skills más populares en ${param.universityTitle}.<br/>
+            </c:when>
+        </c:choose>
+        <script language="javascript">
+            var chart;
+            var data = [];
+            var newSkill = null;
+            <c:choose>
+                <c:when test="${param.report == 'university-popular-skills'}">
+                    <c:forEach var="top" items="${topSkills.popularLanguagesByUniversityId}">
+                        newSkill  = {"skill":"#{top.name}","votes":"#{top.votes}"};
+                        data.push(newSkill)
+                    </c:forEach>
+                </c:when>
+                <c:when test="${param.report == 'university-popular-languages'}">
+                    listado de lenguajes de universidades
+                </c:when>
+                <c:otherwise>
+                    otherwise
+                </c:otherwise>              
+            </c:choose>
+    
+            legend = new AmCharts.AmLegend();
+            legend.align = "center";
+            legend.markerType = "square";
+
+            chart = new AmCharts.AmPieChart();
+            chart.dataProvider = data;
+            chart.titleField = "skill";
+            chart.valueField = "votes";
+            chart.sequencedAnimation = true;
+            chart.startEffect = "elastic";
+            chart.innerRadius = "30%";
+            chart.startDuration = 2;
+            chart.labelRadius = 15;
+            chart.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+            chart.depth3D = 20;
+            chart.angle = 35;
+            chart.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+            
+            AmCharts.ready(function () {
+                chart.addLegend(legend);
+                chart.write("chart");
+
+            });
+        </script>
+        <div id="chart" style="width: 100%; height: 362px;"></div>
+    </h:body>
+</html>

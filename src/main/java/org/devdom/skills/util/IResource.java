@@ -10,9 +10,13 @@ public final class IResource {
         throw new AssertionError();
     }
 
-    public static final String API_PATH = "http://skills-devdom.herokuapp.com/";
+    public static final String API_PATH = "http://50.19.213.136:8080/skills-devdom/";
 
     public static final String[] URI = {
+                                    "api/group",
+                                    "api/group/by/id/:group-id",
+                                    "api/influencer/top/general",
+                                    "top/by/group/id/:group-id",
                                     "api/university",
                                     "api/university/page/:page-number",
                                     "api/university/id/:university-id",
@@ -27,7 +31,6 @@ public final class IResource {
                                     "api/skill/where?votes_gt=:votes-gt",
                                     "api/skill/where?category_id=:category-id",
                                     "api/skill/where?limit=:top",
-                                    
                                     "api/developer",
                                     "api/developer/page/:page-number",
                                     "api/developer/id/:developer-id",
@@ -44,6 +47,10 @@ public final class IResource {
                                 };
 
     public static final String[] DESCRIPTION = {
+        "Listado de los grupo de Developers DOminicanos",
+        "Búsqueda de información de un grupo según su ID",
+        "Top de los 20 developers más influyente tomando como base todos los grupos de desarrolladores del páis",
+        "Top de los 20 developers más influyentes según el ID del grupo",
         "Listado de universidades",
         "Listado de universidades mostrando según la página indicada",
         "Retorna la información de una universidad según su ID",
@@ -94,7 +101,8 @@ public final class IResource {
                   .replaceAll(":sorting","asc")
                   .replaceAll(":top","5")
                   .replaceAll(":university-id","1411")
-                  .replaceAll(":votes-gt","300");
+                  .replaceAll(":votes-gt","300")
+                  .replaceAll(":group-id", "201514949865358"); //group-id Developers Dominicanos por defecto
     }
 
 }

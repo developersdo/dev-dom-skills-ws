@@ -69,6 +69,24 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="limit",
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Skills.findPopularLanguagesByUniversityId", 
+                                procedureName="findPopularLanguagesByUniversityId",
+                                returnsResultSet=true,
+                                resultClass=Skills.class,
+                                parameters={@StoredProcedureParameter(queryParameter="university_id",
+                                                                      name="university_id",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Skills.findPopularSkillsByUniversityId", 
+                                procedureName="findPopularSkillsByUniversityId",
+                                returnsResultSet=true,
+                                resultClass=Skills.class,
+                                parameters={@StoredProcedureParameter(queryParameter="university_id",
+                                                                      name="university_id",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
                                 )
 })
 public class Skills implements Serializable{

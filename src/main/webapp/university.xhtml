@@ -2,7 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <meta charset="utf-8"/>
@@ -27,19 +26,17 @@
             <ui:include src="template/header.xhtml" />
         </ui:insert>
         <div class="wrapper">
-            <header>
+            <header style="height:535px; width:405px; left:60px; top:112px;">
                 <ui:insert name="menu">
-                    <ui:include src="template/menu.xhtml"/>
+                    <ui:include src="template/menu_universities.xhtml"/>
                 </ui:insert>
             </header>
             <section>
                 <ui:insert name="content">
-                    <ui:include src="template/api.xhtml"/>
+                    <ui:include src="template/report_university.xhtml"/>
                 </ui:insert>
             </section>
-            <footer>
-                <p>This project is maintained by <a href="https://github.com/carlosvasquez">carlosvasquez</a></p>
-            </footer>
+
         </div>
         <script src="javascripts/scale.fix.js"></script>
         <script type="text/javascript">

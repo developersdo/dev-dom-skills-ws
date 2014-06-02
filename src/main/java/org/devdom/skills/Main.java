@@ -2,6 +2,7 @@ package org.devdom.skills;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ErrorHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
 /**
@@ -42,11 +43,15 @@ public class Main {
         Server server = new Server(Integer.valueOf(webPort));
         WebAppContext root = new WebAppContext();
 
+        ServletContextHandler sch = new ServletContextHandler(server, "");
+        //sch.setSecurityHandler(getSecurityHandler());
+
         root.setContextPath("/");
         root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
         root.setResourceBase(webappDirLocation);
         root.setDisplayName("Dev Dom - Skills");
         root.setHandler(servletHandler);
+        root.setSecurityHandler(null);
 
         // Parent loader priority is a class loader setting that Jetty accepts.
         // By default Jetty will behave like most web containers in that it will

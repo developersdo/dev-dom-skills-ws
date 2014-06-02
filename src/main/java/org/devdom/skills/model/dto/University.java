@@ -46,6 +46,7 @@ public class University implements Serializable {
     private int id;
     private String name;
     private int votes;
+    private String link;
 
     public int getId() {
         return id;
@@ -81,6 +82,20 @@ public class University implements Serializable {
      */
     public void setVotes(int votes) {
         this.votes = votes;
+    }
+
+    /**
+     * @return the link
+     */
+    public String getLink() {
+        return "reports.xhtml?report=university-popular-skills&university-id="+getId()+"&university-title="+getName();
+    }
+
+    /**
+     * @param link the link to set
+     */
+    public void setLink(String link) {
+        this.link = link;
     }
     
 }
