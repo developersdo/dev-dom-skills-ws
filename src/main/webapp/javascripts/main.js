@@ -4,7 +4,7 @@ devdom = (function( $, undefined ){
         
     var skills = {};
         skills.JSON = new Array();
-        skills.service  = 'http://skills-devdom.herokuapp.com/api';
+        skills.service  = 'http://50.19.213.136:8080/skills-devdom/api';
         skills.resource = '';
         skills.type = 'GET';
         skills.media = 'json';
@@ -180,6 +180,10 @@ devdom = (function( $, undefined ){
                             return createLinks(prev,current,'developer','developer');
                         }else if(skills.syntax.header==='university'){
                             return createLinks(prev,current,'university','developer');
+                        }else if(skills.syntax.header==='group'){
+                            return createLinks(prev,current,'group','group');
+                        }else if(skills.syntax.header==='influencer'){
+                            return createLinks(prev,current,'influencer','influencer');
                         }
                         return current;
                     }
@@ -192,6 +196,8 @@ devdom = (function( $, undefined ){
                     case '"skills":'    : skills.syntax.header='skill';break;
                     case '"developers":': skills.syntax.header='developers';break;
                     case '"university":': skills.syntax.header='university';break;
+                    case '"group":': skills.syntax.header='group';break;
+                    case '"influencer":': skills.syntax.header='influencer';break;
                 }
             },
             highlight : function(){

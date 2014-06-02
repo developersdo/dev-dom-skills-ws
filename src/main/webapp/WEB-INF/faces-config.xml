@@ -8,24 +8,16 @@
         <managed-bean-scope>session</managed-bean-scope>
         <managed-bean-name>topSkills</managed-bean-name>
         <managed-bean-class>org.devdom.skills.model.bean.Top</managed-bean-class>
-        <!--
-        <managed-property>
-            <property-name>universityId</property-name>
-            <value>#{param.university-id}</value>
-        </managed-property>
-        -->
     </managed-bean>
-
+    <managed-bean>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-name>university</managed-bean-name>
+        <managed-bean-class>org.devdom.skills.model.bean.UniversityController</managed-bean-class>
+    </managed-bean>
     <managed-bean>
         <managed-bean-scope>session</managed-bean-scope>
         <managed-bean-name>restAPI</managed-bean-name>
         <managed-bean-class>org.devdom.skills.model.bean.ServiceResources</managed-bean-class>
-<!--
-        <managed-property>
-            <property-name>universityId</property-name>
-            <value>#{param.university-id}</value>
-        </managed-property>
--->
     </managed-bean>
 
 </faces-config>
