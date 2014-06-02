@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:body>
+        <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>
+                    <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>
+                    REST API del grupo Developers Dominicanos
+                </h3>
+                <p>
+                    Este proyecto fue creado con la finalidad de dar acceso a la data creciente acerca de los lenguajes que conocen 
+                    los developers del grupo Developers Dominicanos. Dicha data es recopilada mediante las encuestas publicadas en:<br/> <br/>
+                    -<a href="http://on.fb.me/SkillsDD">http://on.fb.me/SkillsDD</a><br/>
+                    -<a href="http://on.fb.me/SkillsDD_Manejadores_de_Version">http://on.fb.me/SkillsDD_Manejadores_de_Version</a><br/>
+                    -<a href="http://on.fb.me/SkillsDD_Plataforma_de_desarrollo">http://on.fb.me/SkillsDD_Plataforma_de_desarrollo</a><br/>
+                </p>
+                <h3>Skills más populares entre los developers del grupo Developers Dominicanos</h3>
+                <p>
+                    En la gráfica se muestran los #{topSkills.skills.size()} skills más votados
+                    <script language="javascript">
+                        var chartSkills;
+                        var chartData = [];
+                        var newSkill = null;
+                        
+                        <c:forEach var="top" items="${topSkills.skills}">
+                            newSkill  = {"skill":"#{top.name}","votes":"#{top.votes}"};
+                            chartData.push(newSkill)
+                        </c:forEach>
+                        
+                        legendSkills = new AmCharts.AmLegend();
+                        legendSkills.align = "center";
+                        legendSkills.markerType = "square";
+
+                        chartSkills = new AmCharts.AmPieChart();
+                        chartSkills.dataProvider = chartData;
+                        chartSkills.titleField = "skill";
+                        chartSkills.valueField = "votes";
+                        chartSkills.sequencedAnimation = true;
+                        chartSkills.startEffect = "elastic";
+                        chartSkills.innerRadius = "30%";
+                        chartSkills.startDuration = 2;
+                        chartSkills.labelRadius = 15;
+                        chartSkills.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+                        chartSkills.depth3D = 20;
+                        chartSkills.angle = 35;
+                        chartSkills.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+                    </script>
+                    <div id="chartSkills" style="width: 100%; height: 362px;"></div>
+                </p>
+                <h3>Languajes más populares entre los developers del grupo Developers Dominicanos</h3>
+                <p>
+                    En la gráfica se muestran los #{topSkills.languages.size()} lenguajes más votados
+                    <script language="javascript">
+                        var chartLanguages;
+                        var chartData = [];
+                        var newSkill = null;
+                        
+                        <c:forEach var="top" items="${topSkills.languages}">
+                            newSkill  = {"skill":"#{top.name}","votes":"#{top.votes}"};
+                            chartData.push(newSkill)
+                        </c:forEach>
+                        
+                        legendLanguages = new AmCharts.AmLegend();
+                        legendLanguages.align = "center";
+                        legendLanguages.markerType = "square";
+
+                        chartLanguages = new AmCharts.AmPieChart();
+                        chartLanguages.dataProvider = chartData;
+                        chartLanguages.titleField = "skill";
+                        chartLanguages.valueField = "votes";
+                        chartLanguages.sequencedAnimation = true;
+                        chartLanguages.startEffect = "elastic";
+                        chartLanguages.innerRadius = "30%";
+                        chartLanguages.startDuration = 2;
+                        chartLanguages.labelRadius = 15;
+                        chartLanguages.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+                        chartLanguages.depth3D = 20;
+                        chartLanguages.angle = 35;
+                        chartLanguages.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
+                            
+                        AmCharts.ready(function () {
+                            chartLanguages.addLegend(legendLanguages);
+                            chartLanguages.write("chartLanguages");
+
+                            chartSkills.addLegend(legendSkills);
+                            chartSkills.write("chartSkills");
+                            
+                        });
+                    </script>
+                    <div id="chartLanguages" style="width: 100%; height: 362px;"></div>
+                </p>
+                <h3>Acceso</h3>
+                <p> Todos los accesos al API son vía <code>HTTP</code> utilizando el verbo <code>GET</code> desde el dominio <code>http://skills-devdom.herokuapp.com/</code>, las respuestas son entregas al cliente tanto en formato <code>XML</code> como <code>JSON</code>.</p>
+                <h3>Retorno de data</h3>
+                <p>La data retornada puede ser transformada a formato <code>JSON</code> o <code>XML</code> dependiendo del modo en que se realice la llamada.</p>
+                <ul>
+                    <li>
+                        <p>Formateando data por defecto</p>
+                        <code>/api/category/</code>: Si no se especifica una forma en como se desea retorna la información esta tomará el valor predilecto o asignado en el navegador del cliente.<br/><br/>
+                    </li>
+                    <li>
+                        <p>Formatear data especificando el Accept header</p>
+                        <code>/api/category/</code>: Se formaterá la data resultante según el valor que especifiques en el <code>Accept</code> ya sea <code>application/xml</code> o <code>application/json</code>.<br/><br/>
+                    </li>
+                    <li>
+                        <p>Formatear data especificando la extensión</p>
+                        <code>/api/category.json</code>: Las dos extensiones permitidas hasta el momento son <code>.json</code> y <code>.xml</code> para determinar en que formato esperas la data resultante.<br/><br/>
+                    </li>
+                </ul>
+                <h3>Paginación</h3>
+                <p>
+                    Siempre que el documento resultante posea varias página de información se mostrará un tag <code>pagination</code> con los siguientes campos:
+                </p>
+                <dl>
+                    <dt>
+                        <code>previousPage</code>: Permite acceder a la página previa.
+                    </dt>
+                    <dt>
+                        <code>currentPage</code>: marca la página que se encuentra mostrandose.
+                    </dt>
+                    <dt>
+                        <code>firstPage</code>: te lleva a lal primera página.
+                    </dt>
+                    <dt>
+                        <code>nextPage</code>: presenta los resultados de la siguiente página.
+                    </dt>
+                    <dt>
+                        <code>lastPage</code>: permite ir directamente a la última página del documento.
+                    </dt>
+                    <dt>
+                        <code>totalRow</code>: indica la cantidad total registros
+                    </dt>
+                    <dt>
+                        <code>totalPages</code>: Cantidad total de páginas que se encuentran en el documento
+                    </dt>
+                    <dt>
+                        <code>rowsPerPages</code>: Por defecto y hasta el momento se especifica un total de 10 registros por página.
+                    </dt>
+                    <dt>
+                        <code>dataType</code>: retorna a modo y informativo y para poder ser utilizado, el tipo de datos en que fue retornado el documento
+                    </dt>
+                    <dt>
+                        <code>ext</code>: extensión del documento retornado.
+                    </dt>
+                </dl>
+                <h3>Run Live Examples</h3>
+                <p>Todas los recursos que verán a continuación poseen llamadas en vivo a data del API. Desde la llamada resultante se puede explorar otras llamadas vinculadas.</p>
+
+                <c:forEach var="api" items="${restAPI.resources}">
+                    <a name="#{api.tag}-ank" id="#{api.tag}-ank"></a>
+                    <a href="##{api.tag}-ank" title="clic para ver resultados en vivo" id="run" onclick="javascript:devdom.curl('#{api.uri}','#{api.tag}')">#{api.path}</a> <img class="bt-verb" src="images/verb_get.png"/> <a href="#{api.uri}" target="_blank"><img src="images/link.png" class="bt-link"/></a>
+                    <p class="api-detail">#{api.description}</p>
+                    <span id="#{api.tag}"></span>                    
+                </c:forEach>
+    </h:body>
+</html>
