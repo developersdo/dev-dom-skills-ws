@@ -6,57 +6,7 @@
     <h:body>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
         <br/>
-        <c:choose>
-            <c:when test="${param.report == 'university-popular-skills'}">
-                10 skills más populares en ${param.universityTitle}.<br/>
-            </c:when>
-        </c:choose>
-        <script language="javascript">
-            var chart;
-            var data = [];
-            var newSkill = null;
-            <c:choose>
-                <c:when test="${param.report == 'university-popular-skills'}">
-                    <c:forEach var="top" items="${topSkills.popularSkillsByUniversityId}">
-                        newSkill  = {"skill":"#{top.name}","votes":"#{top.votes}"};
-                        data.push(newSkill)
-                    </c:forEach>
-                </c:when>
-                <c:when test="${param.report == 'university-popular-languages'}">
-                    listado de lenguajes de universidades
-                </c:when>
-                <c:otherwise>
-                    otherwise
-                </c:otherwise>              
-            </c:choose>
-    
-            legend = new AmCharts.AmLegend();
-            legend.align = "center";
-            legend.markerType = "square";
-
-            chart = new AmCharts.AmPieChart();
-            chart.dataProvider = data;
-            chart.titleField = "skill";
-            chart.valueField = "votes";
-            chart.sequencedAnimation = true;
-            chart.startEffect = "elastic";
-            chart.innerRadius = "30%";
-            chart.startDuration = 2;
-            chart.labelRadius = 15;
-            chart.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
-            chart.depth3D = 20;
-            chart.angle = 35;
-            chart.balloonText = '[[title]]<br/><span style="font-size:14px"><b>[[value]]</b> ([[percents]]%)</span>';
-            
-            AmCharts.ready(function () {
-                chart.addLegend(legend);
-                chart.write("chart");
-
-            });
-        </script>
-        <div id="chart" style="width: 100%; height: 362px;"></div>
+        <h:outputText escape="false" value="#{top.graphPopularSkillsByUniversityId}"/>
     </h:body>
 </html>

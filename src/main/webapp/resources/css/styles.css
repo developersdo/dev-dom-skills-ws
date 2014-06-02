@@ -373,3 +373,8 @@ footer {
     font-size:17px;
     font-weight:bold;
 }
+
+.disableLink{
+    color: #777777;
+    font:300 14px 1.5 Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
