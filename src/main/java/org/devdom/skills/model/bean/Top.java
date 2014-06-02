@@ -2,9 +2,10 @@ package org.devdom.skills.model.bean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.devdom.skills.model.dao.SkillsDao;
@@ -29,7 +30,7 @@ public class Top implements Serializable{
         return dao.findAllSkillsByTopFilters(5,0,10);
     }
     
-    public List<Skills> getPopularLanguagesByUniversityId(){
+    private List<Skills> getPopularLanguagesByUniversityId(){
         
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         int universityId = Integer.parseInt(request.getParameter("university-id"));
@@ -37,14 +38,60 @@ public class Top implements Serializable{
         return dao.findPopularLanguagesByUniversityId(universityId);
     }
 
-    public List<Skills> getPopularSkillsByUniversityId(){
+    private List<Skills> getPopularSkillsByUniversityId(){
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String,String> request = externalContext.getRequestParameterMap();
         
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        int universityId = Integer.parseInt(request.getParameter("university-id"));
-
+        int universityId = Integer.parseInt(request.get("university-id"));
         return dao.findPopularSkillsByUniversityId(universityId);
     }
     
+    /**
+     * Listado de skills según el id de la universidad
+     * @return 
+     */
+    public String getGraphPopularSkillsByUniversityId(){
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String,String> request = externalContext.getRequestParameterMap();
+        String html;
+        int universityId = Integer.parseInt(request.get("university-id"));
+        List<Skills> skills = dao.findPopularSkillsByUniversityId(universityId);
+        
+        html = "<script language=\"javascript\">\n" +
+"            var chart;\n" +
+"            var data = [];\n" +
+"            var newSkill = null;\n";
+        for(Skills skill : skills){
+            html+= "newSkill  = {\"skill\":\""+skill.getName()+"\",\"votes\":\""+skill.getVotes()+"\"};\n";
+            html+= "data.push(newSkill)\n";
+        }
+
+        html +="         legend = new AmCharts.AmLegend();\n" +
+            "            legend.align = \"center\";\n" +
+            "            legend.markerType = \"square\";\n" +
+            "\n" +
+            "            chart = new AmCharts.AmPieChart();\n" +
+            "            chart.dataProvider = data;\n" +
+            "            chart.titleField = \"skill\";\n" +
+            "            chart.valueField = \"votes\";\n" +
+            "            chart.sequencedAnimation = true;\n" +
+            "            chart.startEffect = \"elastic\";\n" +
+            "            chart.innerRadius = \"30%\";\n" +
+            "            chart.startDuration = 2;\n" +
+            "            chart.labelRadius = 15;\n" +
+            "            chart.balloonText = '[[title]]<br/><span style=\"font-size:14px\"><b>[[value]]</b> ([[percents]]%)</span>';\n" +
+            "            chart.depth3D = 20;\n" +
+            "            chart.angle = 35;\n" +
+            "            chart.balloonText = '[[title]]<br/><span style=\"font-size:14px\"><b>[[value]]</b> ([[percents]]%)</span>';\n" +
+            "            \n" +
+            "            AmCharts.ready(function () {\n" +
+            "                chart.addLegend(legend);\n" +
+            "                chart.write(\"chart\");\n" +
+            "            });\n" +
+            "        </script>\n";
+        html += "<div id=\"chart\" style=\"width: 100%; height:500px;\"></div>";
+        return html;
+    }
     /**
      * Gráfica que representa los lenguajes más populares entre los developers
      * @return 
