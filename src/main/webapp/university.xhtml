@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+        <title>skills.devdom by carlosvasquez</title>
+        <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'/>
+        <h:outputStylesheet library="css" name="styles.css"  />
+        <h:outputStylesheet library="css" name="pygment_trac.css"  />
+        <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+	<!-- jQuery -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+        <script src="http://www.amcharts.com/lib/3/pie.js"></script>
+        <!-- jQuery rest -->
+        <script src="javascripts/main.js"></script>        
+    </h:head>
+    <h:body>
+        <ui:insert name="header">
+            <ui:include src="template/header.xhtml" />
+        </ui:insert>
+        <div class="wrapper">
+            <header style="overflow-y: scroll; height: 500px;">
+                <ui:insert name="menu">
+                    <ui:include src="template/menu_universities.xhtml"/>
+                </ui:insert>
+            </header>
+            <section>
+                <ui:insert name="content">
+                    <ui:include src="template/report_university.xhtml"/>
+                </ui:insert>
+            </section>
+
+        </div>
+        <script src="javascripts/scale.fix.js"></script>
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+            try {
+                var pageTracker = _gat._getTracker("UA-45053242-1");
+                pageTracker._trackPageview();
+            } catch(err) {}
+        </script>
+    </h:body>
+</html>
